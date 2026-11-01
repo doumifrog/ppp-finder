@@ -1,0 +1,871 @@
+[
+ {
+  "program": "HIPPY",
+  "name": "Boulder Housing Partners",
+  "address": "Diagonal Court 3265 30th Street",
+  "city": "Boulder",
+  "zip": "80304",
+  "phone": "720-564-4615",
+  "website": "https://www.boulderhousing.org",
+  "email": "perezc@boulderhousing.org",
+  "ages": [
+   "2 to 3",
+   "3 to 4"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Boulder"
+  ],
+  "id": 0
+ },
+ {
+  "program": "HIPPY",
+  "name": "Catholic Charities Diocese of Southern Colorado",
+  "address": "429 W 10th St",
+  "city": "Pueblo",
+  "zip": "81003",
+  "phone": "(719) 586-8605",
+  "website": "https://www.pueblocharities.org",
+  "email": "fstuart@ccsoco.org",
+  "ages": [
+   "3 to 4",
+   "4 to 5"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Bent",
+   "Crowley",
+   "Huerfano",
+   "Las Animas",
+   "Otero",
+   "Pueblo"
+  ],
+  "id": 1
+ },
+ {
+  "program": "HIPPY",
+  "name": "Clayton Early Learning",
+  "address": "3751 Martin Luther King Blvd",
+  "city": "Denver",
+  "zip": "80205",
+  "phone": "(303) 393-5632",
+  "website": "https://www.claytonearlylearning.org",
+  "email": "gteran@claytonearlylearning.org",
+  "ages": [
+   "3 to 4",
+   "4 to 5"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Denver"
+  ],
+  "id": 2
+ },
+ {
+  "program": "HIPPY",
+  "name": "Focus Points Family Resource Center",
+  "address": "2501 E 48th Ave.",
+  "city": "Denver",
+  "zip": "80216",
+  "phone": "(303) 292-0770",
+  "website": "https://www.focuspoints.org",
+  "email": "Glenda@focuspoints.org",
+  "ages": [
+   "3 to 4",
+   "4 to 5"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Adams",
+   "Denver"
+  ],
+  "id": 3
+ },
+ {
+  "program": "HIPPY",
+  "name": "Jefferson County Public Schools (Jeffco HIPPY)",
+  "address": "5280 W. Ohio Ave",
+  "city": "Lakewood",
+  "zip": "80226",
+  "phone": "(303) 982-3174",
+  "website": "https://sites.google.com/a/jeffcoschools.us/hippy/",
+  "email": "Katherine.Harrison@jeffco.k12.co.us",
+  "ages": [
+   "2 to 3",
+   "3 to 4",
+   "4 to 5"
+  ],
+  "languages": [
+   "English",
+   "Hindi",
+   "Punjabi",
+   "Spanish",
+   "Vietnamese"
+  ],
+  "counties": [
+   "Jefferson"
+  ],
+  "id": 4
+ },
+ {
+  "program": "HIPPY",
+  "name": "Mile High United Way",
+  "address": "711 Park Avenue West",
+  "city": "Denver",
+  "zip": "80205",
+  "phone": "(303) 561-2168",
+  "website": "https://UnitedWayDenver.org",
+  "email": "gloria.fuentes@unitedwaydenver.org",
+  "ages": [
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Arapahoe"
+  ],
+  "id": 5
+ },
+ {
+  "program": "HIPPY",
+  "name": "North Range Behavioral Health",
+  "address": "2350 West 3rd Street Road",
+  "city": "Greeley",
+  "zip": "80631",
+  "phone": "",
+  "website": "https://www.NorthRange.org",
+  "email": "juanita.puga@northrange.org",
+  "ages": [
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "Arabic",
+   "English",
+   "French",
+   "Nepali",
+   "Spanish"
+  ],
+  "counties": [
+   "Larimer",
+   "Weld"
+  ],
+  "id": 6
+ },
+ {
+  "program": "HIPPY",
+  "name": "Roots Family Center",
+  "address": "4200 Morrison Rd.",
+  "city": "Denver",
+  "zip": "80219",
+  "phone": "(720) 216-1133",
+  "website": "https://www.rootsfamilycenter.org/",
+  "email": "josety@rootsfamilycenter.org",
+  "ages": [
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "Spanish"
+  ],
+  "counties": [
+   "Denver"
+  ],
+  "id": 7
+ },
+ {
+  "program": "HIPPY",
+  "name": "San Luis Valley Area Health Education Center (SLV AHEC)",
+  "address": "300 Ross Ave",
+  "city": "Alamosa",
+  "zip": "81101",
+  "phone": "(719) 589-4977 x 20 or (719) 298-2276",
+  "website": "https://www.slvahec.org",
+  "email": "beverly@slvahec.org",
+  "ages": [
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Alamosa",
+   "Conejos",
+   "Costilla",
+   "Mineral",
+   "Rio Grande",
+   "Saguache"
+  ],
+  "id": 8
+ },
+ {
+  "program": "HIPPY",
+  "name": "Spring Institute for Intercultural Learning",
+  "address": "1373 Grant St.",
+  "city": "Denver",
+  "zip": "80203",
+  "phone": "(303) 863-0188",
+  "website": "https://springinstitute.org/",
+  "email": "fzamani@springinstitute.org",
+  "ages": [
+   "2 to 3",
+   "3 to 4",
+   "4 to 5"
+  ],
+  "languages": [
+   "Arabic",
+   "Burmese",
+   "Dari",
+   "English",
+   "Farsi",
+   "Oromo",
+   "Pashto",
+   "Swahili"
+  ],
+  "counties": [
+   "Arapahoe",
+   "Denver"
+  ],
+  "id": 9
+ },
+ {
+  "program": "HIPPY",
+  "name": "Teller Park ECE-HIPPY",
+  "address": "639 Hathaway St.",
+  "city": "Fairplay",
+  "zip": "80440",
+  "phone": "(719) 659-33313",
+  "website": "https://www.earlyconnections.org",
+  "email": "tpecc.hippy@gmail.com",
+  "ages": [
+   "2 to 3",
+   "3 to 4",
+   "4 to 5"
+  ],
+  "languages": [
+   "English"
+  ],
+  "counties": [
+   "Park"
+  ],
+  "id": 10
+ },
+ {
+  "program": "PAT",
+  "name": "Adult & Family Education (Colorado Springs School District 11)",
+  "address": "2115 Afton Way",
+  "city": "Colorado Springs",
+  "zip": "80909",
+  "phone": "(719) 328-3023",
+  "website": "",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English"
+  ],
+  "counties": [
+   "El Paso"
+  ],
+  "id": 11
+ },
+ {
+  "program": "PAT",
+  "name": "Berthoud and Loveland PAT/House of Neighborly Service",
+  "address": "1511 E 11th St",
+  "city": "Loveland",
+  "zip": "80537",
+  "phone": "(970) 215-0305",
+  "website": "https://berthoudpat.weebly.com/",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English"
+  ],
+  "counties": [
+   "Larimer"
+  ],
+  "id": 12
+ },
+ {
+  "program": "PAT",
+  "name": "Bright Futures for Early Childhood and Families",
+  "address": "657 W. Colorado Ave.",
+  "city": "Telluride",
+  "zip": "81435",
+  "phone": "(877) 728-5613 (toll free)",
+  "website": "https://www.brightfuturesforchildren.org",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Montrose",
+   "Ouray",
+   "San Miguel"
+  ],
+  "id": 13
+ },
+ {
+  "program": "PAT",
+  "name": "Catholic Charities of Southern Colorado",
+  "address": "429 W 10th St.",
+  "city": "Pueblo",
+  "zip": "81003",
+  "phone": "(719) 544-4233",
+  "website": "https://www.pueblocharities.org",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Fremont",
+   "Pueblo"
+  ],
+  "id": 14
+ },
+ {
+  "program": "PAT",
+  "name": "Community Partnership Family Resource Center",
+  "address": "11115 U.S. 24",
+  "city": "Divide",
+  "zip": "80814",
+  "phone": "(719) 686-0705",
+  "website": "https://www.cpteller.org",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English"
+  ],
+  "counties": [
+   "Teller"
+  ],
+  "id": 15
+ },
+ {
+  "program": "PAT",
+  "name": "Delta Family Center",
+  "address": "822 Grand Ave.",
+  "city": "Delta",
+  "zip": "81416",
+  "phone": "(970) 874-9517",
+  "website": "https://frc.deltaschools.com",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English"
+  ],
+  "counties": [
+   "Delta"
+  ],
+  "id": 16
+ },
+ {
+  "program": "PAT",
+  "name": "Early Childhood Council of the San Luis Valley",
+  "address": "715 Main Street",
+  "city": "Alamosa",
+  "zip": "81101",
+  "phone": "(719) 937-4010",
+  "website": "https://www.eccslv.org",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Alamosa",
+   "Costilla",
+   "Saguache"
+  ],
+  "id": 17
+ },
+ {
+  "program": "PAT",
+  "name": "Family Development Center – Newborn Network",
+  "address": "2875 Village Dr.",
+  "city": "Steamboat Springs",
+  "zip": "80477",
+  "phone": "(970) 879-7330",
+  "website": "https://www.familydevelopmentcenter.org",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4"
+  ],
+  "languages": [
+   "English"
+  ],
+  "counties": [
+   "Routt"
+  ],
+  "id": 18
+ },
+ {
+  "program": "PAT",
+  "name": "Family Star Montessori",
+  "address": "2246 Federal Blvd.",
+  "city": "Denver",
+  "zip": "80211",
+  "phone": "(303) 477-7827",
+  "website": "https://www.familystar.net",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Denver"
+  ],
+  "id": 19
+ },
+ {
+  "program": "PAT",
+  "name": "Focus Points Family Resource Center",
+  "address": "2501 E 48th Ave.",
+  "city": "Denver",
+  "zip": "80216",
+  "phone": "(303) 292-0770",
+  "website": "https://www.focuspoints.org",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Denver"
+  ],
+  "id": 20
+ },
+ {
+  "program": "PAT",
+  "name": "Growing Home",
+  "address": "3489 W 72nd Ave",
+  "city": "Westminster",
+  "zip": "80030",
+  "phone": "(303) 426-0430",
+  "website": "https://www.GrowingHome.org",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Adams",
+   "Broomfield"
+  ],
+  "id": 21
+ },
+ {
+  "program": "PAT",
+  "name": "Hilltop Family First",
+  "address": "359 Main Street",
+  "city": "Grand Junction",
+  "zip": "81501",
+  "phone": "(970) 244-0460",
+  "website": "http://www.htop.org/child/ff",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Mesa",
+   "Montrose"
+  ],
+  "id": 22
+ },
+ {
+  "program": "PAT",
+  "name": "Huerfano-Las Animas Counties Early Childhood Advisory Council",
+  "address": "412 Benedicta Avenue",
+  "city": "Trinidad",
+  "zip": "81082",
+  "phone": "(719) 845-0463",
+  "website": "https://ecclacolorado.org/counties/huerfano-las-animas-early-childhood-council/",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Huerfano",
+   "Las Animas"
+  ],
+  "id": 23
+ },
+ {
+  "program": "PAT",
+  "name": "Jefferson County Public Schools",
+  "address": "13950 W 20th Avenue",
+  "city": "Golden",
+  "zip": "80401",
+  "phone": "(303) 982-8011",
+  "website": "https://www.jeffco.k12.co.us",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Jefferson"
+  ],
+  "id": 24
+ },
+ {
+  "program": "PAT",
+  "name": "La Plata Family Centers",
+  "address": "129 East 32nd Street",
+  "city": "Durango",
+  "zip": "81301",
+  "phone": "(970) 385-4747",
+  "website": "https://www.lpfcc.org",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English"
+  ],
+  "counties": [
+   "La Plata"
+  ],
+  "id": 25
+ },
+ {
+  "program": "PAT",
+  "name": "Metropolitan State University of Denver",
+  "address": "4440 Navajo Street",
+  "city": "Denver",
+  "zip": "80211",
+  "phone": "(303) 458-8063",
+  "website": "https://www.msudenver.edu/flp/",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "Spanish"
+  ],
+  "counties": [
+   "Adams",
+   "Denver",
+   "Jefferson"
+  ],
+  "id": 26
+ },
+ {
+  "program": "PAT",
+  "name": "Morgan County Family Center",
+  "address": "411 Main Street",
+  "city": "Fort Morgan",
+  "zip": "80701",
+  "phone": "(970) 867-9606",
+  "website": "https://www.morganfamilycenter.org",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Morgan"
+  ],
+  "id": 27
+ },
+ {
+  "program": "PAT",
+  "name": "North Range Behavioral Health",
+  "address": "2350 W 3rd Street Road",
+  "city": "Greeley",
+  "zip": "80634",
+  "phone": "(970) 347-2493",
+  "website": "https://www.NorthRange.org",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Weld"
+  ],
+  "id": 28
+ },
+ {
+  "program": "PAT",
+  "name": "Roots Family Center",
+  "address": "4200 Morrison Rd.",
+  "city": "Denver",
+  "zip": "80219",
+  "phone": "(720) 432-6882",
+  "website": "",
+  "email": "crystal@rootsfamilycenter.org",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4"
+  ],
+  "languages": [
+   "Spanish"
+  ],
+  "counties": [
+   "Denver"
+  ],
+  "id": 29
+ },
+ {
+  "program": "PAT",
+  "name": "Shiloh House",
+  "address": "2163 S Yosemite St.",
+  "city": "Denver",
+  "zip": "80231",
+  "phone": "(303) 745-0327 1-800 Children (244-5373)",
+  "website": "https://www.familiesfirstcolorado.org",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "Burmese",
+   "English",
+   "Spanish"
+  ],
+  "counties": [
+   "Adams",
+   "Arapahoe",
+   "Boulder",
+   "Broomfield",
+   "Denver",
+   "Douglas",
+   "Jefferson"
+  ],
+  "id": 30
+ },
+ {
+  "program": "PAT",
+  "name": "The Piñon Project",
+  "address": "300 N Elm Street",
+  "city": "Cortez",
+  "zip": "81321",
+  "phone": "(970) 564-1195",
+  "website": "https://www.pinonproject.org",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English"
+  ],
+  "counties": [
+   "Dolores",
+   "Montezuma"
+  ],
+  "id": 31
+ },
+ {
+  "program": "PAT",
+  "name": "Tri-County Family Care Center",
+  "address": "512 N Main",
+  "city": "Rocky Ford",
+  "zip": "81067",
+  "phone": "(719) 254-7776",
+  "website": "https://www.tricountyfamilycarecenter.org",
+  "email": "",
+  "ages": [
+   "Prenatal",
+   "Birth to 1",
+   "1 to 2",
+   "2 to 3",
+   "3 to 4",
+   "4 to 5",
+   "5 and older"
+  ],
+  "languages": [
+   "English"
+  ],
+  "counties": [
+   "Bent",
+   "Crowley",
+   "Otero"
+  ],
+  "id": 32
+ }
+]

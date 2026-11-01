@@ -11,7 +11,7 @@ Built by Duke Global Research and Consulting for Parent Possible, fall 2026.
 | `index.html` | The finder page. One self-contained file with no outside dependencies except Google Fonts. |
 | `template.html` | The source for `index.html`, before the data is filled in. Edit this, not `index.html`. |
 | `data/sites.json` | The 33 PAT and HIPPY sites, cleaned from the "Overall" tab of the Site Update spreadsheet. |
-| `data/co_counties.json`, `data/co_adj.json` | Colorado county map shapes and which counties border each other. |
+| `data/co_counties.json` | Colorado county map shapes. |
 | `scripts/` | Scripts that rebuild the data and the page. |
 | `wordpress-plugin/` | A small WordPress plugin that puts the finder on any page with `[program_finder]`. |
 

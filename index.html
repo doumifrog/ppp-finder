@@ -9,70 +9,65 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: finder bar on top, county map + result list side by side, stacking on phones. Built to sit inside a WordPress iframe. */
 :root{
-  --bg:#f6f7f4; --surface:#ffffff; --ink:#18302e; --muted:#5b6b68; --line:#d9dfdb;
-  --accent:#e09a2c; --accent-ink:#3a2500;
-  --pat:#1f6f8b; --pat-soft:#dcedf2; --hippy:#8a3f6e; --hippy-soft:#f3e2ec;
-  --map-empty:#e7ebe8; --map-cover:#b9d6cf; --map-both:#7fb5a8; --map-sel:#e09a2c; --map-stroke:#ffffff;
-  --warn-soft:#fff3dc; --focus:#1f6f8b;
-  --f-display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", sans-serif;
-  --f-body:"Atkinson Hyperlegible", "Verdana", "Segoe UI", sans-serif;
+  /* Parent Possible palette: white page, teal and coral-orange, warm gray text */
+  --bg:#ffffff; --surface:#ffffff; --field:#f6f9f9; --ink:#2c3b3e; --muted:#636e70; --line:#dce5e6;
+  --accent:#e8603c; --accent-hover:#d24f2c; --accent-ink:#ffffff;
+  --teal:#2e7f86; --teal-dark:#1f5f66; --teal-soft:#e3f1f2;
+  --pat:#2e7f86; --pat-soft:#e3f1f2; --hippy:#c4491f; --hippy-soft:#fdebe4;
+  --map-empty:#f1f4f4; --map-cover:#9fcfd3; --map-both:#2e7f86; --map-sel:#e8603c; --map-stroke:#ffffff;
+  --warn-soft:#fdf1ec; --focus:#2e7f86;
+  --f-display:"Montserrat", "Avenir Next", "Segoe UI", sans-serif;
+  --f-body:"Montserrat", "Avenir Next", "Segoe UI", sans-serif;
   --r:10px;
+  color-scheme:light;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#111a19; --surface:#182423; --ink:#e6eeec; --muted:#9db0ac; --line:#2c3b39;
-  --accent:#f0b04a; --accent-ink:#2a1a00;
-  --pat:#6fb7d0; --pat-soft:#1b3440; --hippy:#d58cb8; --hippy-soft:#3a2232;
-  --map-empty:#22302e; --map-cover:#2f5952; --map-both:#3f7c70; --map-sel:#f0b04a; --map-stroke:#111a19;
-  --warn-soft:#3a2e16; --focus:#6fb7d0; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#111a19; --surface:#182423; --ink:#e6eeec; --muted:#9db0ac; --line:#2c3b39;
-  --accent:#f0b04a; --accent-ink:#2a1a00;
-  --pat:#6fb7d0; --pat-soft:#1b3440; --hippy:#d58cb8; --hippy-soft:#3a2232;
-  --map-empty:#22302e; --map-cover:#2f5952; --map-both:#3f7c70; --map-sel:#f0b04a; --map-stroke:#111a19;
-  --warn-soft:#3a2e16; --focus:#6fb7d0; color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
 .wrap{max-width:1180px;margin:0 auto;padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:20px}
 .proto{font-size:13px;color:var(--muted);border:1px dashed var(--line);border-radius:var(--r);padding:8px 12px}
 .proto b{color:var(--ink)}
-h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4vw,40px);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-family:var(--f-display);font-weight:700;color:var(--accent);font-size:clamp(28px,4vw,40px);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.01em}
 .lede{margin:6px 0 0;max-width:62ch;color:var(--muted)}
-.bar{display:grid;grid-template-columns:2fr 1.2fr 1.2fr 1.2fr;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.bar{display:grid;grid-template-columns:1.6fr 1.7fr 1fr 1fr;gap:12px;background:var(--teal-soft);border:0;border-radius:var(--r);padding:14px}
 .field{display:grid;gap:4px;min-width:0}
 .field label,.lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-select,input,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
+select,input,textarea{font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
 textarea{resize:vertical;min-height:70px}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
-.chip{font:inherit;font-size:14px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:7px 12px;cursor:pointer}
+.bar select{background:var(--surface)}
+a{color:var(--teal);text-decoration-thickness:1px;text-underline-offset:2px}
+a:hover{color:var(--accent)}
+.chip{font:inherit;font-size:14px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 12px;cursor:pointer}
 .chip[aria-pressed="true"].pat{background:var(--pat);border-color:var(--pat);color:var(--surface)}
 .chip[aria-pressed="true"].hippy{background:var(--hippy);border-color:var(--hippy);color:var(--surface)}
 .main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:20px;align-items:start}
 .mapbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;position:sticky;top:12px}
 .mapbox svg{width:100%;height:auto;display:block}
-.mapbox path{fill:var(--map-empty);stroke:var(--map-stroke);stroke-width:1;cursor:pointer;transition:fill .15s}
+.mapbox path{fill:var(--map-empty);stroke:var(--map-stroke);stroke-width:1;transition:fill .15s}
+.mapbox path.c1,.mapbox path.c2{cursor:pointer}
 .mapbox path.c1{fill:var(--map-cover)}
 .mapbox path.c2{fill:var(--map-both)}
-.mapbox path:hover{fill:var(--accent);opacity:.7}
+.mapbox path.c1:hover,.mapbox path.c2:hover{fill:var(--accent);opacity:.6}
 .mapbox path.sel{fill:var(--map-sel);opacity:1}
-.mapbox text{font-family:var(--f-body);font-size:9px;fill:var(--ink);pointer-events:none;text-anchor:middle;opacity:.65}
+.mapbox text{font-family:var(--f-body);font-size:9px;font-weight:500;fill:var(--ink);pointer-events:none;text-anchor:middle;paint-order:stroke;stroke:#ffffff;stroke-width:2.5px;stroke-linejoin:round}
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:8px}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .sw{width:14px;height:14px;border-radius:3px;display:inline-block;border:1px solid var(--line)}
 .tip{font-size:13px;color:var(--muted);margin:4px 0 0}
 .results{display:grid;gap:12px;min-width:0}
 .rhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
-.rhead h2{font-family:var(--f-display);font-weight:600;font-size:22px;margin:0}
+.rhead h2{font-family:var(--f-display);font-weight:700;font-size:22px;margin:0;color:var(--teal-dark)}
 .rhead .count{color:var(--muted);font-size:14px}
 .linkbtn{font:inherit;font-size:14px;background:none;border:0;color:var(--pat);text-decoration:underline;cursor:pointer;padding:0}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;gap:10px;min-width:0}
 .card .top{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
-.card h3{margin:0;font-size:18px;line-height:1.3}
+.card h3{margin:0;font-size:18px;line-height:1.3;font-weight:700;color:var(--teal-dark)}
 .card .where{color:var(--muted);font-size:14px;margin:2px 0 0}
 .badge{flex:none;font-size:12px;font-weight:700;letter-spacing:.05em;border-radius:6px;padding:3px 8px}
 .badge.PAT{background:var(--pat-soft);color:var(--pat)}
@@ -82,30 +77,30 @@ textarea{resize:vertical;min-height:70px}
 .facts dd{margin:0;min-width:0;overflow-wrap:anywhere}
 .ages{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;max-width:340px}
 .ages i{display:block;height:8px;border-radius:2px;background:var(--line)}
-.ages i.on{background:var(--ink)}
+.ages i.on{background:var(--teal)}
 .ages i.hit{background:var(--accent)}
 .agecap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;max-width:340px;font-size:10px;color:var(--muted);text-align:center;font-style:normal}
 .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .btn{font:inherit;font-weight:700;border:0;border-radius:8px;padding:10px 16px;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
 .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);font-weight:400}
-.btn:hover{filter:brightness(1.05)}
+.btn:hover{background:var(--accent-hover)}
+.btn.ghost:hover{background:var(--field)}
 .note{font-size:13px;color:var(--muted)}
 .empty{background:var(--warn-soft);border-radius:var(--r);padding:16px;display:grid;gap:8px}
 .empty h3{margin:0;font-size:18px}
 .empty p{margin:0}
-.nbrs{display:flex;gap:6px;flex-wrap:wrap}
 dialog{border:0;border-radius:14px;padding:0;max-width:560px;width:calc(100% - 32px);background:var(--surface);color:var(--ink);max-height:calc(100% - 32px)}
 dialog::backdrop{background:rgba(10,20,20,.5)}
 .dlg{padding:20px;display:grid;gap:14px}
-.dlg h2{font-family:var(--f-display);font-weight:600;font-size:22px;margin:0}
+.dlg h2{font-family:var(--f-display);font-weight:700;color:var(--teal-dark);font-size:22px;margin:0}
 .dlg .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .dlg fieldset{border:0;padding:0;margin:0;display:grid;gap:6px}
 .radios{display:flex;gap:14px;flex-wrap:wrap}
 .radios label,.check{display:flex;gap:6px;align-items:center;font-size:15px;text-transform:none;letter-spacing:0;color:var(--ink);font-weight:400}
 .radios input,.check input{width:auto}
-.privacy{font-size:13px;background:var(--bg);border-radius:8px;padding:10px 12px;color:var(--muted)}
+.privacy{font-size:13px;background:var(--teal-soft);border-radius:8px;padding:10px 12px;color:var(--muted)}
 .privacy b{color:var(--ink)}
-.preview{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:300px;overflow:auto}
+.preview{background:var(--field);border:1px solid var(--line);border-radius:8px;padding:12px;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:300px;overflow:auto}
 .err{color:#b3261e;font-size:13px}
 .foot{font-size:13px;color:var(--muted)}
 @media (max-width:860px){.bar{grid-template-columns:1fr 1fr}.main{grid-template-columns:1fr}.mapbox{position:static}}
@@ -158,7 +153,6 @@ dialog::backdrop{background:rgba(10,20,20,.5)}
       <div class="legend">
         <span><i class="sw" style="background:var(--map-both)"></i>PAT and HIPPY</span>
         <span><i class="sw" style="background:var(--map-cover)"></i>One program</span>
-        <span><i class="sw" style="background:var(--map-empty)"></i>No program yet</span>
         <span><i class="sw" style="background:var(--map-sel)"></i>Selected</span>
       </div>
       <p class="tip">Tip: click a county on the map, or choose it from the list.</p>
@@ -1099,7 +1093,6 @@ const SITES=[
 ]
 ;
 const MAP=[{"n":"Adams","d":"M431.2,158.9L435.3,157.9L435.3,149.8L437.9,151.5L440.9,147.2L489.8,146.7L525.3,146.2L571.6,145.4L571.9,180.8L492.1,182.3L449,182.5L454.9,177.9L464.7,178.4L461.6,171.1L476.6,171L476.5,164L478.4,160.5L470.1,159.7L464.9,160.8L465,168.1L458.6,168.6L458.6,174.5L448.9,174.5L445.9,176.5L431.3,175.7Z","x":505.8,"y":163.7},{"n":"Alamosa","d":"M326.3,500.3L327,453L389.5,452.8L387.2,458.8L387.2,464.5L384.5,473.7L386.4,476.4L385.2,478.3L358.5,506.4L326.3,506.2Z","x":353.6,"y":477.1},{"n":"Arapahoe","d":"M443,186.5L443,186.5L443,186.5ZM431.4,198.7L431.4,197.6L431.4,197.3L433.3,194.3L439.6,192.3L449.1,198.2L452.8,193.8L447.1,192.3L447.1,188.9L450.9,188.4L449,182.5L492.1,182.3L571.9,180.8L572.4,204.4L571.6,204.4L472.4,206L431.8,206.1Z","x":506.1,"y":194},{"n":"Archuleta","d":"M170.7,495.2L209,495.8L208.9,500L253.9,500.2L253.9,499.1L257.4,499.3L257.1,523L266,527.8L266.6,535.1L278.9,555.2L236,554.8L235.2,553.7L176,552.8L169.4,552.6Z","x":217,"y":527.1},{"n":"Baca","d":"M645.5,464.1L680.6,462.9L756.6,460.3L758,495L760,548.8L688.7,550.9L680.1,550.5L656,551.1L646.6,551.4L645.7,499.6L646.4,499.5Z","x":702.3,"y":506.4},{"n":"Bent","d":"M608.8,380.4L678.8,378.3L680.6,438.4L679.9,438.6L680.6,462.9L645.5,464.1L610,464.8L610.2,440.5Z","x":644.8,"y":421.7},{"n":"Boulder","d":"M428.2,152.8L428.2,152.8L428.2,152.8ZM368.8,112L394.5,112.3L406.4,111.6L431,111.7L430.8,147.1L431.2,147.2L427.5,152.9L425.2,153.2L421.5,159L395.3,159.2L395.3,156.4L366.5,156.5L364.7,155.4L365.1,145.3L370.3,141.1L370.7,127.5L367.3,125.8L366.2,120ZM425.2,153.2L427.5,152.9L425.2,153.2Z","x":399.3,"y":134.7},{"n":"Broomfield","d":"M427.5,152.9L425.2,153.2L427.5,152.9ZM421.5,159L425.2,153.2L427.5,152.9L431.2,147.2L437.9,146.1L436.7,143.7L440.8,141.2L440.9,147.2L437.9,151.5L435.3,149.8L435.3,157.9L431.2,158.9L429.4,160.9ZM428.2,152.8L428.2,152.8L428.2,152.8ZM439,142.7L439,142.7L439,142.7Z","x":431.9,"y":152.7},{"n":"Chaffee","d":"M268.5,282.8L270.9,274.7L311.8,275.3L314,284.2L320.4,284.7L320,291.1L328.7,290.8L335.5,295.9L334.4,299L339.7,300.4L337.8,303.1L341.5,309.3L338.1,315.2L335,324.7L339.6,326.6L340.7,333.3L344.5,337.2L341.8,344.6L341.4,350.3L338.3,350.5L330.2,358.3L325.3,356.8L323.4,361.3L305.4,361.2L296.3,351.5L294.9,342.4L292.3,334.4L286.2,329.1L284,323.9L287.5,320.2L287.2,308.3L294.5,302.4L297.6,295.9L287.7,293.2L282,294.5L272.7,282.7Z","x":311.1,"y":317.3},{"n":"Cheyenne","d":"M631.3,275L678.3,273.4L749,269.9L750.8,317.3L751.2,328.5L643.5,332.1L631.7,332.7L632.2,322.1Z","x":691.1,"y":301.6},{"n":"Clear Creek","d":"M340.2,188.2L344.7,183.1L344.4,174.9L351.1,176.4L353.4,174L360.1,173.9L365,167.5L371,168.7L384.8,180.2L395.3,181.7L395.4,206.4L375.5,206L350.3,206.4L355.9,200.1L354.1,196.8L348.1,195.7L340.2,191.7Z","x":369.7,"y":189.5},{"n":"Conejos","d":"M257.4,499.3L277.9,500.1L326.3,500.3L326.3,506.2L358.5,506.4L357.3,508.2L360.8,515.5L358.1,521.2L360,530.3L357.6,536.5L358.8,540.8L355.3,549.2L361.1,555.4L329.9,555.4L278.9,555.2L266.6,535.1L266,527.8L257.1,523Z","x":309.9,"y":527.4},{"n":"Costilla","d":"M358.5,506.4L385.2,478.3L386.4,476.4L391,471.7L395.3,471.6L398.8,468L406.5,465.4L413,470.5L418.5,470.6L415,475.8L419.3,480.7L419.7,492.8L421.6,492.7L424.8,498.9L420.9,502L420.9,515.6L422.1,515L422.3,555.5L414.9,555.5L361.1,555.4L355.3,549.2L358.8,540.8L357.6,536.5L360,530.3L358.1,521.2L360.8,515.5L357.3,508.2Z","x":392.5,"y":517.1},{"n":"Crowley","d":"M538.6,346.8L585.1,346L596.9,346.5L597.1,370.2L597.7,380.7L597.2,393.3L585.7,393.7L585.9,401.6L562.5,402.1L561.3,400.7L547.8,399.8L545.5,397.8L538.6,397.9Z","x":567.6,"y":372.9},{"n":"Custer","d":"M353.1,383L432.7,383.9L432.9,430.4L429.1,425L424.8,425.6L422.5,418.2L417.5,418L412.5,424.1L409.1,431.6L404.5,427.4L394.1,433.9L387.5,433.2L383.7,427.3L378.3,425.6L373.7,417.8L371,409.9L368,406.5L366.1,397.4L353.8,385.8Z","x":398.8,"y":404.2},{"n":"Delta","d":"M174.1,251.3L172.5,325.9L79.6,323.5L80.3,301.6L105.7,291.8L111.6,283.7L110.9,282L122.9,271.5L130.9,271.6L136.2,269.2L145.6,274.3L154,268.6L159.5,261.3Z","x":134.8,"y":298.8},{"n":"Denver","d":"M431.3,175.7L445.9,176.5L448.9,174.5L458.6,174.5L458.6,168.6L465,168.1L464.9,160.8L470.1,159.7L478.4,160.5L476.5,164L476.6,171L461.6,171.1L464.7,178.4L454.9,177.9L449,182.5L450.9,188.4L447.1,188.9L447.1,192.3L452.8,193.8L449.1,198.2L439.6,192.3L433.3,194.3L431.4,197.3L431.4,197.6L431.4,198.7L425.4,198L431.4,194.6L428.4,192L431.4,188.4ZM443,186.5L443,186.5L443,186.5Z","x":449.7,"y":179.7},{"n":"Dolores","d":"M5.1,427.8L28.5,428.7L29.4,426.7L89.4,428.9L94.1,439L101.4,437.7L104.6,434.7L106.8,436.8L117.7,434.8L131.2,446.3L129.5,453.5L119.4,456.7L118.8,464.4L98.3,464.4L17.3,462.1L2.6,481.6L3.2,475.4Z","x":60.6,"y":447.3},{"n":"Douglas","d":"M431.8,206.1L472.4,206L473,265.2L434,265.4L402.6,265.5L412.8,249.6L419.9,234L419.1,227.8L424.4,224.1L422.9,219.1L428.1,215.8Z","x":444.8,"y":238.2},{"n":"Eagle","d":"M224.8,157.1L264.4,157.5L267.4,156.9L287.3,157.1L288.3,168.4L292.3,178.7L296.8,180.2L301.9,187.2L304.9,187.8L308.3,193L312.8,194.2L313.5,200.5L310.1,204.4L310,210.7L305.5,211.5L305.8,219.3L310.6,228.7L310.6,231.4L302.3,235.4L295.1,234.8L290.3,231L287.2,233.5L215.2,231.9L216.6,156.9Z","x":259.8,"y":197.1},{"n":"El Paso","d":"M434,265.4L473,265.2L537.3,264.6L537.4,299.8L538.6,346.8L484,347.9L444,348.3L443.9,330.6L444.1,310.6L430.1,310.4L430.4,300.8L434.6,300.9Z","x":487.8,"y":305.5},{"n":"Elbert","d":"M472.4,206L571.6,204.4L572,263.9L573.1,299.4L537.4,299.8L537.3,264.6L473,265.2Z","x":528,"y":243.1},{"n":"Fremont","d":"M330.2,358.3L338.3,350.5L341.4,350.3L341.8,344.6L344.5,337.2L340.7,333.3L339.6,326.6L335,324.7L402.7,324.3L412.6,324.3L412.3,331.1L443.9,330.6L444,348.3L444.6,383.8L432.7,383.9L353.1,383L346.6,378.4L343.2,372.7Z","x":391.1,"y":354.7},{"n":"Garfield","d":"M12.5,208.3L13.4,186.3L29.9,186.9L29.8,188.2L65.4,189.6L65.6,183.6L129.8,185.4L130.2,167.7L155.7,167.7L183,168.5L183.3,156.4L195.3,157L195.7,133.2L224.8,133.6L225.4,145.6L224.8,157.1L216.6,156.9L215.2,231.9L182.1,231.3L79.2,228.6L11.8,226.2Z","x":133,"y":198.2},{"n":"Gilpin","d":"M366.5,156.5L395.3,156.4L395.3,159.2L395.3,181.7L384.8,180.2L371,168.7L365,167.5L363.9,162.1Z","x":382.5,"y":166.7},{"n":"Grand","d":"M265.7,86.1L268.3,88.5L269.7,95.3L277.8,97L282,91.3L285.6,98.1L292.3,100L296,98.4L301.9,102.1L302.3,98.7L306.1,98.4L309,102.9L315.7,100.5L318.7,102.2L330.2,96.8L337.3,99.8L338.8,94.9L343.3,91.6L343.7,83.5L348.1,81.2L352.9,82.9L352.2,90.1L357,98.5L365.5,106.2L368.8,112L366.2,120L367.3,125.8L370.7,127.5L370.3,141.1L365.1,145.3L364.7,155.4L366.5,156.5L363.9,162.1L365,167.5L360.1,173.9L353.4,174L351.1,176.4L344.4,174.9L344.7,183.1L340.2,188.2L332.7,190.1L326.3,184.6L323.8,173.5L319,168.3L311.5,165.6L306.3,158.7L291.4,158.5L287.3,157.1L267.4,156.9L266.4,146.4L267.4,100.3L265.2,100.2Z","x":320.4,"y":133.2},{"n":"Gunnison","d":"M157.2,375.3L171.4,375.7L172.5,325.9L174.1,251.3L179.4,249.7L181.8,246.1L185.5,246.3L187.8,248.7L187.3,254.3L189.5,257.7L195.5,260.5L196.9,265.2L219.6,265.6L227,272.5L226.2,276.1L236.3,283.2L240.9,280.8L242.4,284L247.3,285.2L253.1,276.5L258.8,274.9L262.9,276.4L268.5,282.8L272.7,282.7L282,294.5L287.7,293.2L297.6,295.9L294.5,302.4L287.2,308.3L287.5,320.2L284,323.9L286.2,329.1L292.3,334.4L294.9,342.4L296.3,351.5L305.4,361.2L225.2,359.9L224.2,397.7L163.6,396.5L164.4,395L162,382.6Z","x":222.2,"y":327},{"n":"Hinsdale","d":"M163.6,396.5L224.2,397.7L224.1,423.7L216.8,422.9L209.1,425.8L207.7,461.5L210,461.7L209,495.8L170.7,495.2L171.3,465.7L171.7,448.2L174.4,446.4L173.4,442.6L168.4,440.3L166.2,433.7L168.2,430L166.8,424.2L163,421.2L160.8,417.6L165.5,416.7L169.5,408.4L163.8,403.1Z","x":191.4,"y":441.6},{"n":"Huerfano","d":"M389.5,452.8L389.5,446.8L391.8,445.6L392.2,439.2L387.5,433.2L394.1,433.9L404.5,427.4L409.1,431.6L412.5,424.1L417.5,418L422.5,418.2L424.8,425.6L429.1,425L432.9,430.4L436.8,435.1L476,432.1L508.1,443.1L496.7,453.9L487.6,470.6L486.1,477L475,487.2L472.3,487.1L471.6,494.2L465.4,499.3L451.5,502.1L446.1,501L438.7,504.6L426.8,514.3L422.1,515L420.9,515.6L420.9,502L424.8,498.9L421.6,492.7L419.7,492.8L419.3,480.7L415,475.8L418.5,470.6L413,470.5L406.5,465.4L398.8,468L395.3,471.6L391,471.7L386.4,476.4L384.5,473.7L387.2,464.5L387.2,458.8Z","x":442.8,"y":461.7},{"n":"Jackson","d":"M245.3,10.1L300.5,11.2L313.8,11.5L314.1,19.7L319.2,24.7L320.3,29L328.4,37.9L338.6,60L342.2,70.3L342.6,77.2L346.7,76.5L348.1,81.2L343.7,83.5L343.3,91.6L338.8,94.9L337.3,99.8L330.2,96.8L318.7,102.2L315.7,100.5L309,102.9L306.1,98.4L302.3,98.7L301.9,102.1L296,98.4L292.3,100L285.6,98.1L282,91.3L277.8,97L269.7,95.3L268.3,88.5L265.7,86.1L265.5,77.4L260.8,68.3L260.5,62.8L264.3,51.9L264,46.4L267.8,36.2L262.4,26.1L258,28L253.2,23.3L251,24.5L246.3,20.7L243.8,14.5Z","x":297.8,"y":56.4},{"n":"Jefferson","d":"M431.4,197.3L431.4,197.6L431.4,197.3ZM395.4,206.4L395.3,181.7L395.3,159.2L421.5,159L429.4,160.9L431.2,158.9L431.3,175.7L431.4,188.4L428.4,192L431.4,194.6L425.4,198L431.4,198.7L431.8,206.1L428.1,215.8L422.9,219.1L424.4,224.1L419.1,227.8L419.9,234L412.8,249.6L402.6,265.5L395.4,265.6Z","x":410.9,"y":203.7},{"n":"Kiowa","d":"M596.9,346.5L596.9,345.6L632,344.5L631.7,332.7L643.5,332.1L751.2,328.5L753,375.6L678.8,378.3L608.8,380.4L597.7,380.7L597.1,370.2Z","x":678.3,"y":355.7},{"n":"Kit Carson","d":"M630.2,203.2L667.1,201.8L745.9,198.3L745.9,199.2L747.3,235.2L748.6,258.1L749,269.9L678.3,273.4L631.3,275L631.8,262.6Z","x":689.2,"y":236.8},{"n":"La Plata","d":"M118.8,464.4L171.3,465.7L170.7,495.2L169.4,552.6L86.4,550.6L72,550L77.3,542.7L80.4,532.5L82.4,530.5L82.3,520.8L87.5,516.4L90.8,510.8L93.3,502.3L103.5,498.5L106.4,491.8L111.6,488L111.4,479.9L113.2,470.8Z","x":131.3,"y":512.7},{"n":"Lake","d":"M287.2,233.5L290.3,231L295.1,234.8L302.3,235.4L310.6,231.4L318.1,231.5L316.2,239.4L312.8,240.9L312.7,254.5L313.8,264.3L309.9,268.7L314.1,271.2L311.8,275.3L270.9,274.7L270.2,270.6L273.3,266.2L272.9,261.4L278.6,259.9L281.4,245.6L281.1,240.2L286.8,239.7Z","x":295.8,"y":255.5},{"n":"Larimer","d":"M313.8,11.5L361.6,11.9L407.7,11.7L441.9,11.6L442.2,54.5L441.9,66.3L442.1,99.8L430.6,99.8L431,111.7L406.4,111.6L394.5,112.3L368.8,112L365.5,106.2L357,98.5L352.2,90.1L352.9,82.9L348.1,81.2L346.7,76.5L342.6,77.2L342.2,70.3L338.6,60L328.4,37.9L320.3,29L319.2,24.7L314.1,19.7Z","x":388.7,"y":56.8},{"n":"Las Animas","d":"M422.1,515L426.8,514.3L438.7,504.6L446.1,501L451.5,502.1L465.4,499.3L471.6,494.2L472.3,487.1L475,487.2L486.1,477L487.6,470.6L496.7,453.9L508.1,443.1L539.1,453.8L539.7,466.2L610,464.8L645.5,464.1L646.4,499.5L645.7,499.6L646.6,551.4L546.5,554.1L510.7,555L439,555.6L422.3,555.5Z","x":542.6,"y":510.6},{"n":"Lincoln","d":"M537.4,299.8L573.1,299.4L572,263.9L571.6,204.4L572.4,204.4L630.2,203.2L631.8,262.6L631.3,275L632.2,322.1L631.7,332.7L632,344.5L596.9,345.6L596.9,346.5L585.1,346L538.6,346.8Z","x":594.3,"y":282.5},{"n":"Logan","d":"M582.1,9.1L602,8.7L676.7,6.7L677.8,41L676.9,46.9L678,83.2L665.8,83.6L603.1,85.6L594.9,85.7L594.6,73.9L582.8,74.2L582.3,50.6L583,49.9Z","x":630.8,"y":45.7},{"n":"Mesa","d":"M11.8,226.2L79.2,228.6L182.1,231.3L178.2,238.2L187.1,244.6L185.5,246.3L181.8,246.1L179.4,249.7L174.1,251.3L159.5,261.3L154,268.6L145.6,274.3L136.2,269.2L130.9,271.6L122.9,271.5L110.9,282L111.6,283.7L105.7,291.8L80.3,301.6L79.6,323.5L78.5,346.2L6.4,343.7L7.6,313.9L9.3,288.8Z","x":71.6,"y":275.5},{"n":"Mineral","d":"M224.1,423.7L227.6,421.2L229.9,424.1L236.8,423.2L240.2,429L245.2,429.8L248.2,433.7L256.7,435.4L256.6,440.6L256.3,463.8L254.4,463.7L253.9,499.1L253.9,500.2L208.9,500L209,495.8L210,461.7L207.7,461.5L209.1,425.8L216.8,422.9Z","x":231.4,"y":462.7},{"n":"Moffat","d":"M19,50.2L20.8,4.4L109.9,7.4L136.7,7.9L198.2,9.2L197.5,64L191.6,63.9L191.4,71.7L185.5,71.6L184.5,99.8L183.4,99.8L183.4,114.8L60.6,111.6L16.3,109.9L17.8,72.2Z","x":105.4,"y":59.1},{"n":"Montezuma","d":"M2.6,481.6L17.3,462.1L98.3,464.4L118.8,464.4L113.2,470.8L111.4,479.9L111.6,488L106.4,491.8L103.5,498.5L93.3,502.3L90.8,510.8L87.5,516.4L82.3,520.8L82.4,530.5L80.4,532.5L77.3,542.7L72,550L0,547.6Z","x":50.1,"y":503.2},{"n":"Montrose","d":"M6.4,343.7L78.5,346.2L79.6,323.5L172.5,325.9L171.4,375.7L157.2,375.3L157.3,371.3L104.2,370L107.1,372.4L108.8,380.4L116.9,380.6L124.4,385.8L123.4,394.8L121.5,394.8L20.7,391.1L6.5,390.8L5.2,374.2Z","x":89.9,"y":359.7},{"n":"Morgan","d":"M582.8,74.2L594.6,73.9L594.9,85.7L594.8,97.5L595.9,144.9L571.6,145.4L525.3,146.2L524.2,75.1Z","x":559.9,"y":110},{"n":"Otero","d":"M538.6,397.9L545.5,397.8L547.8,399.8L561.3,400.7L562.5,402.1L585.9,401.6L585.7,393.7L597.2,393.3L597.7,380.7L608.8,380.4L610.2,440.5L610,464.8L539.7,466.2L539.1,453.8L539.3,441.9Z","x":575.8,"y":430.5},{"n":"Ouray","d":"M157.2,375.3L162,382.6L164.4,395L163.6,396.5L163.8,403.1L169.5,408.4L165.5,416.7L160.8,417.6L163,421.2L155.4,421.1L155.6,427.1L149.4,430.8L144.8,429L145.6,425.6L138.9,417.5L133.2,416.8L127.9,412.1L129,400L122.9,399.7L121.5,394.8L123.4,394.8L124.4,385.8L116.9,380.6L108.8,380.4L107.1,372.4L104.2,370L157.3,371.3Z","x":142.5,"y":395},{"n":"Park","d":"M318.1,231.5L326.4,234.3L329.8,233.9L332.9,228.5L337.4,226.8L335.9,223.6L341.6,221.1L347.6,214.6L346.1,212.9L351.4,210L350.3,206.4L375.5,206L395.4,206.4L395.4,265.6L402.6,265.5L402.7,324.3L335,324.7L338.1,315.2L341.5,309.3L337.8,303.1L339.7,300.4L334.4,299L335.5,295.9L328.7,290.8L320,291.1L320.4,284.7L314,284.2L311.8,275.3L314.1,271.2L309.9,268.7L313.8,264.3L312.7,254.5L312.8,240.9L316.2,239.4Z","x":361.8,"y":267.1},{"n":"Phillips","d":"M677.8,41L739.5,38.8L739.7,45.8L741.1,80.8L678,83.2L676.9,46.9Z","x":708.8,"y":61},{"n":"Pitkin","d":"M182.1,231.3L215.2,231.9L287.2,233.5L286.8,239.7L281.1,240.2L281.4,245.6L278.6,259.9L272.9,261.4L273.3,266.2L270.2,270.6L270.9,274.7L268.5,282.8L262.9,276.4L258.8,274.9L253.1,276.5L247.3,285.2L242.4,284L240.9,280.8L236.3,283.2L226.2,276.1L227,272.5L219.6,265.6L196.9,265.2L195.5,260.5L189.5,257.7L187.3,254.3L187.8,248.7L185.5,246.3L187.1,244.6L178.2,238.2Z","x":235.6,"y":252.3},{"n":"Prowers","d":"M678.8,378.3L753,375.6L753.1,376.4L756.1,447.5L756.6,460.3L680.6,462.9L679.9,438.6L680.6,438.4Z","x":717.4,"y":419.5},{"n":"Pueblo","d":"M432.7,383.9L444.6,383.8L444,348.3L484,347.9L538.6,346.8L538.6,397.9L539.3,441.9L539.1,453.8L508.1,443.1L476,432.1L436.8,435.1L432.9,430.4Z","x":490.2,"y":394.9},{"n":"Rio Blanco","d":"M16.3,109.9L60.6,111.6L183.4,114.8L225.1,115.4L224.8,133.6L195.7,133.2L195.3,157L183.3,156.4L183,168.5L155.7,167.7L130.2,167.7L129.8,185.4L65.6,183.6L65.4,189.6L29.8,188.2L29.9,186.9L13.4,186.3Z","x":101.8,"y":145.7},{"n":"Rio Grande","d":"M256.6,440.6L268.2,440.8L268,452.6L327,453L326.3,500.3L277.9,500.1L257.4,499.3L253.9,499.1L254.4,463.7L256.3,463.8Z","x":289.6,"y":475.3},{"n":"Routt","d":"M198.2,9.2L245.3,10.1L243.8,14.5L246.3,20.7L251,24.5L253.2,23.3L258,28L262.4,26.1L267.8,36.2L264,46.4L264.3,51.9L260.5,62.8L260.8,68.3L265.5,77.4L265.7,86.1L265.2,100.2L267.4,100.3L266.4,146.4L267.4,156.9L264.4,157.5L224.8,157.1L225.4,145.6L224.8,133.6L225.1,115.4L183.4,114.8L183.4,99.8L184.5,99.8L185.5,71.6L191.4,71.7L191.6,63.9L197.5,64Z","x":230.6,"y":80.3},{"n":"Saguache","d":"M224.2,397.7L225.2,359.9L305.4,361.2L323.4,361.3L325.3,356.8L330.2,358.3L343.2,372.7L346.6,378.4L353.1,383L353.8,385.8L366.1,397.4L368,406.5L371,409.9L373.7,417.8L378.3,425.6L383.7,427.3L387.5,433.2L392.2,439.2L391.8,445.6L389.5,446.8L389.5,452.8L327,453L268,452.6L268.2,440.8L256.6,440.6L256.7,435.4L248.2,433.7L245.2,429.8L240.2,429L236.8,423.2L229.9,424.1L227.6,421.2L224.1,423.7Z","x":301.2,"y":407.7},{"n":"San Juan","d":"M131.2,446.3L138.3,440L140,433.9L144.8,429L149.4,430.8L155.6,427.1L155.4,421.1L163,421.2L166.8,424.2L168.2,430L166.2,433.7L168.4,440.3L173.4,442.6L174.4,446.4L171.7,448.2L171.3,465.7L118.8,464.4L119.4,456.7L129.5,453.5Z","x":150.8,"y":448.3},{"n":"San Miguel","d":"M6.5,390.8L20.7,391.1L121.5,394.8L122.9,399.7L129,400L127.9,412.1L133.2,416.8L138.9,417.5L145.6,425.6L144.8,429L140,433.9L138.3,440L131.2,446.3L117.7,434.8L106.8,436.8L104.6,434.7L101.4,437.7L94.1,439L89.4,428.9L29.4,426.7L28.5,428.7L5.1,427.8Z","x":73.7,"y":413.4},{"n":"Sedgwick","d":"M676.7,6.7L680,6.4L738.2,4.5L739.5,38.8L677.8,41Z","x":708,"y":22.7},{"n":"Summit","d":"M287.3,157.1L291.4,158.5L306.3,158.7L311.5,165.6L319,168.3L323.8,173.5L326.3,184.6L332.7,190.1L340.2,188.2L340.2,191.7L348.1,195.7L354.1,196.8L355.9,200.1L350.3,206.4L351.4,210L346.1,212.9L347.6,214.6L341.6,221.1L335.9,223.6L337.4,226.8L332.9,228.5L329.8,233.9L326.4,234.3L318.1,231.5L310.6,231.4L310.6,228.7L305.8,219.3L305.5,211.5L310,210.7L310.1,204.4L313.5,200.5L312.8,194.2L308.3,193L304.9,187.8L301.9,187.2L296.8,180.2L292.3,178.7L288.3,168.4Z","x":320.4,"y":197},{"n":"Teller","d":"M402.6,265.5L434,265.4L434.6,300.9L430.4,300.8L430.1,310.4L444.1,310.6L443.9,330.6L412.3,331.1L412.6,324.3L402.7,324.3Z","x":420.4,"y":299.2},{"n":"Washington","d":"M571.9,180.8L571.6,145.4L595.9,144.9L594.8,97.5L594.9,85.7L603.1,85.6L665.8,83.6L666.1,95.5L665,95.4L666.4,142.8L665.3,142.8L667.1,201.8L630.2,203.2L572.4,204.4Z","x":624,"y":148.3},{"n":"Weld","d":"M439,142.7L439,142.7L439,142.7ZM441.9,11.6L487.6,10.7L533.2,10.2L582.1,9.1L583,49.9L582.3,50.6L582.8,74.2L524.2,75.1L525.3,146.2L489.8,146.7L440.9,147.2L440.8,141.2L436.7,143.7L437.9,146.1L431.2,147.2L430.8,147.1L431,111.7L430.6,99.8L442.1,99.8L441.9,66.3L442.2,54.5Z","x":498.9,"y":71.4},{"n":"Yuma","d":"M665.8,83.6L678,83.2L741.1,80.8L741.5,93.2L743.3,140.2L745.9,198.3L667.1,201.8L665.3,142.8L666.4,142.8L665,95.4L666.1,95.5Z","x":704.7,"y":141.6}];
-const ADJ={"Conejos":["Alamosa","Archuleta","Costilla","Rio Grande"],"Jackson":["Grand","Larimer","Routt"],"Archuleta":["Conejos","Hinsdale","La Plata","Mineral","Rio Grande"],"Washington":["Adams","Arapahoe","Kit Carson","Lincoln","Logan","Morgan","Yuma"],"Garfield":["Eagle","Mesa","Pitkin","Rio Blanco","Routt"],"Rio Grande":["Alamosa","Archuleta","Conejos","Mineral","Saguache"],"Morgan":["Adams","Logan","Washington","Weld"],"Elbert":["Arapahoe","Douglas","El Paso","Lincoln"],"Montrose":["Delta","Gunnison","Mesa","Ouray","San Miguel"],"Otero":["Bent","Crowley","Kiowa","Las Animas","Pueblo"],"Teller":["Douglas","El Paso","Fremont","Park"],"Phillips":["Logan","Sedgwick","Yuma"],"Yuma":["Kit Carson","Logan","Phillips","Washington"],"Pueblo":["Crowley","Custer","El Paso","Fremont","Huerfano","Las Animas","Otero"],"Alamosa":["Conejos","Costilla","Huerfano","Rio Grande","Saguache"],"Baca":["Bent","Las Animas","Prowers"],"Montezuma":["Dolores","La Plata"],"Arapahoe":["Adams","Denver","Douglas","Elbert","Jefferson","Lincoln","Washington"],"Mineral":["Archuleta","Hinsdale","Rio Grande","Saguache"],"Dolores":["Montezuma","San Juan","San Miguel"],"Jefferson":["Adams","Arapahoe","Boulder","Broomfield","Clear Creek","Denver","Douglas","Gilpin","Park"],"Delta":["Gunnison","Mesa","Montrose"],"Grand":["Boulder","Clear Creek","Eagle","Gilpin","Jackson","Larimer","Routt","Summit"],"Saguache":["Alamosa","Chaffee","Custer","Fremont","Gunnison","Hinsdale","Huerfano","Mineral","Rio Grande"],"Summit":["Clear Creek","Eagle","Grand","Lake","Park"],"Gunnison":["Chaffee","Delta","Hinsdale","Mesa","Montrose","Ouray","Pitkin","Saguache"],"Costilla":["Alamosa","Conejos","Huerfano","Las Animas"],"Weld":["Adams","Boulder","Broomfield","Larimer","Logan","Morgan"],"Las Animas":["Baca","Bent","Costilla","Huerfano","Otero","Pueblo"],"Routt":["Eagle","Garfield","Grand","Jackson","Moffat","Rio Blanco"],"Douglas":["Arapahoe","El Paso","Elbert","Jefferson","Teller"],"Rio Blanco":["Garfield","Moffat","Routt"],"Broomfield":["Adams","Boulder","Jefferson","Weld"],"Denver":["Adams","Arapahoe","Jefferson"],"Boulder":["Broomfield","Gilpin","Grand","Jefferson","Larimer","Weld"],"Larimer":["Boulder","Grand","Jackson","Weld"],"Crowley":["Kiowa","Lincoln","Otero","Pueblo"],"Custer":["Fremont","Huerfano","Pueblo","Saguache"],"El Paso":["Douglas","Elbert","Fremont","Lincoln","Pueblo","Teller"],"Gilpin":["Boulder","Clear Creek","Grand","Jefferson"],"Huerfano":["Alamosa","Costilla","Custer","Las Animas","Pueblo","Saguache"],"Ouray":["Gunnison","Hinsdale","Montrose","San Juan","San Miguel"],"Cheyenne":["Kiowa","Kit Carson","Lincoln"],"Moffat":["Rio Blanco","Routt"],"Pitkin":["Chaffee","Eagle","Garfield","Gunnison","Lake","Mesa"],"Prowers":["Baca","Bent","Kiowa"],"San Juan":["Dolores","Hinsdale","La Plata","Ouray","San Miguel"],"La Plata":["Archuleta","Hinsdale","Montezuma","San Juan"],"Hinsdale":["Archuleta","Gunnison","La Plata","Mineral","Ouray","Saguache","San Juan"],"Kit Carson":["Cheyenne","Lincoln","Washington","Yuma"],"San Miguel":["Dolores","Montrose","Ouray","San Juan"],"Clear Creek":["Gilpin","Grand","Jefferson","Park","Summit"],"Kiowa":["Bent","Cheyenne","Crowley","Lincoln","Otero","Prowers"],"Park":["Chaffee","Clear Creek","Fremont","Jefferson","Lake","Summit","Teller"],"Lake":["Chaffee","Eagle","Park","Pitkin","Summit"],"Lincoln":["Arapahoe","Cheyenne","Crowley","El Paso","Elbert","Kiowa","Kit Carson","Washington"],"Adams":["Arapahoe","Broomfield","Denver","Jefferson","Morgan","Washington","Weld"],"Eagle":["Garfield","Grand","Lake","Pitkin","Routt","Summit"],"Logan":["Morgan","Phillips","Sedgwick","Washington","Weld","Yuma"],"Sedgwick":["Logan","Phillips"],"Chaffee":["Fremont","Gunnison","Lake","Park","Pitkin","Saguache"],"Fremont":["Chaffee","Custer","El Paso","Park","Pueblo","Saguache","Teller"],"Mesa":["Delta","Garfield","Gunnison","Montrose","Pitkin"],"Bent":["Baca","Kiowa","Las Animas","Otero","Prowers"]};
 const AGES=['Prenatal','Birth to 1','1 to 2','2 to 3','3 to 4','4 to 5','5 and older'];
 const AGE_SHORT=['Prenatal','0–1','1–2','2–3','3–4','4–5','5+'];
 const PP_INBOX='[Parent Possible intake inbox]';
@@ -1111,7 +1104,7 @@ const cover={};
 SITES.forEach(s=>s.counties.forEach(c=>{(cover[c]=cover[c]||new Set()).add(s.program)}));
 
 // controls
-MAP.forEach(m=>{const o=document.createElement('option');o.value=m.n;o.textContent=m.n+' County'+(cover[m.n]?'':' (no program yet)');$('#county').append(o)});
+MAP.forEach(m=>{const o=document.createElement('option');o.value=m.n;if(!cover[m.n])return;o.textContent=m.n+' County';$('#county').append(o)});
 const langs=[...new Set(SITES.flatMap(s=>s.languages))].sort((a,b)=>a==='English'?-1:b==='English'?1:a.localeCompare(b));
 langs.forEach(l=>{$('#lang').append(new Option(l,l));$('#pLang').append(new Option(l,l))});
 
@@ -1120,11 +1113,11 @@ const svgNS='http://www.w3.org/2000/svg';
 MAP.forEach(m=>{
   const p=document.createElementNS(svgNS,'path');p.setAttribute('d',m.d);p.dataset.n=m.n;
   const cv=cover[m.n];p.setAttribute('class',cv?(cv.size>1?'c2':'c1'):'');
-  const t=document.createElementNS(svgNS,'title');t.textContent=m.n+' County'+(cv?' – '+[...cv].join(' and '):' – no program yet');p.append(t);
-  p.addEventListener('click',()=>setCounty(state.county===m.n?'':m.n));
+  if(cv){const t=document.createElementNS(svgNS,'title');t.textContent=m.n+' County – '+[...cv].join(' and ');p.append(t);
+  p.addEventListener('click',()=>setCounty(state.county===m.n?'':m.n));}
   $('#map').append(p);
 });
-MAP.forEach(m=>{if(m.n.length>11||['Denver','Broomfield','Gilpin','Clear Creek'].includes(m.n))return;const t=document.createElementNS(svgNS,'text');t.setAttribute('x',m.x);t.setAttribute('y',m.y+3);t.textContent=m.n;$('#map').append(t)});
+MAP.forEach(m=>{if(!cover[m.n]||m.n.length>11||['Denver','Broomfield','Gilpin','Clear Creek'].includes(m.n))return;const t=document.createElementNS(svgNS,'text');t.setAttribute('x',m.x);t.setAttribute('y',m.y+3);t.textContent=m.n;$('#map').append(t)});
 
 function setCounty(c){state.county=c;$('#county').value=c;render()}
 $('#county').addEventListener('change',e=>setCounty(e.target.value));
@@ -1173,13 +1166,7 @@ function render(){
   let html='';
   const title=c?`Programs serving ${esc(c)} County`:'All PAT and HIPPY programs in Colorado';
   html+=`<div class="rhead"><h2>${title}</h2><span class="count">${list.length} ${list.length===1?'program':'programs'}${filtersOn?' · <button class="linkbtn" id="clr">Clear filters</button>':''}</span></div>`;
-  if(c&&!cover[c]){
-    const near=(ADJ[c]||[]).filter(n=>cover[n]);
-    html+=`<div class="empty"><h3>No PAT or HIPPY program serves ${esc(c)} County yet</h3>
-      <p>Parent Possible can still help you find support. Reach out and they'll point you to the nearest option, including other home visiting programs in your area.</p>
-      <p><a href="https://www.parentpossible.org/" target="_blank" rel="noopener">Contact Parent Possible</a></p>
-      ${near.length?`<p class="note">Programs serve these nearby counties. Some may be able to help or refer you:</p><div class="nbrs">${near.map(n=>`<button class="chip" data-go="${esc(n)}">${esc(n)}</button>`).join('')}</div>`:''}</div>`;
-  }else if(!list.length){
+  if(!list.length){
     html+=`<div class="empty"><h3>No programs match all of those filters</h3><p>${c?esc(c)+' County has programs, but none match your choices for age, language, or program.':'Try fewer filters.'} Programs can sometimes arrange interpreters, so it's still worth reaching out.</p><p><button class="btn ghost" id="clr2">Clear filters</button></p></div>`;
   }
   html+=list.map(card).join('');
@@ -1188,7 +1175,6 @@ function render(){
 $('#results').addEventListener('click',e=>{
   const t=e.target.closest('button');if(!t)return;
   if(t.id==='clr'||t.id==='clr2')return clearFilters();
-  if(t.dataset.go)return setCounty(t.dataset.go);
   if(t.dataset.id)openForm(SITES[+t.dataset.id],t);
 });
 

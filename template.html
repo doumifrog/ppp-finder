@@ -65,9 +65,9 @@ a:hover{color:var(--accent)}
 .tip{font-size:13px;color:var(--muted);margin:4px 0 0}
 .zipbox{background:var(--teal-soft);border-radius:var(--r);padding:14px;display:grid;gap:8px}
 .zipbox h2{font-size:16px;font-weight:700;margin:0;color:var(--teal-dark)}
-.ziprow{display:flex;gap:8px}
-.ziprow input{background:var(--surface);flex:1;min-width:0;font-variant-numeric:tabular-nums;letter-spacing:.04em}
-.ziprow .btn{flex:none;background:var(--teal);color:#ffffff}
+.ziprow{display:flex;gap:8px;flex-wrap:wrap}
+.ziprow input{background:var(--surface);flex:1 1 210px;min-width:0;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.ziprow .btn{flex:1 0 auto;background:var(--teal);color:#ffffff}
 .ziprow .btn:hover{background:var(--teal-dark)}
 .zipmsg{margin:0;font-size:14px}
 .zipmsg.bad{color:#b3261e}
@@ -189,7 +189,7 @@ dialog::backdrop{background:rgba(10,20,20,.5)}
       <form class="zipbox" id="zipForm" novalidate>
         <h2><label for="zip" data-t="zipH">Don't know your county? Enter your ZIP code</label></h2>
         <div class="ziprow">
-          <input id="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="80216">
+          <input id="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5">
           <button class="btn" type="submit" data-t="zipGo">Find my county</button>
         </div>
         <div id="zipOut" aria-live="polite"></div>
@@ -280,7 +280,7 @@ en:{
   anyLang:'Any language', legHas:'Has a program', legSel:'Selected',
   tip:'Click a county on the map, or choose it from the list.', mapLabel:'Map of Colorado counties. Click a county to choose it.',
   both:'PAT and HIPPY',
-  zipH:"Don't know your county? Enter your ZIP code", zipGo:'Find my county',
+  zipH:"Don't know your county? Enter your ZIP code", zipGo:'Find my county', zipPh:'5-digit ZIP code',
   zipBad:'Enter a 5-digit ZIP code.', zipUnknown:z=>`We couldn't find ZIP code ${z} in Colorado. Choose your county from the list above instead.`,
   zipNone:z=>`No PAT or HIPPY program serves ZIP code ${z} yet.`,
   zipOne:(z,c)=>`ZIP code ${z} is in ${c} County. Showing programs there.`,
@@ -321,7 +321,7 @@ es:{
   anyLang:'Cualquier idioma', legHas:'Tiene un programa', legSel:'Seleccionado',
   tip:'Haga clic en un condado del mapa o elíjalo de la lista.', mapLabel:'Mapa de los condados de Colorado. Haga clic en un condado para elegirlo.',
   both:'PAT y HIPPY',
-  zipH:'¿No sabe su condado? Escriba su código postal', zipGo:'Buscar mi condado',
+  zipH:'¿No sabe su condado? Escriba su código postal', zipGo:'Buscar mi condado', zipPh:'Código postal de 5 dígitos',
   zipBad:'Escriba un código postal de 5 dígitos.', zipUnknown:z=>`No encontramos el código postal ${z} en Colorado. Elija su condado de la lista de arriba.`,
   zipNone:z=>`Todavía no hay un programa PAT o HIPPY para el código postal ${z}.`,
   zipOne:(z,c)=>`El código postal ${z} está en el condado de ${c}. Aquí están sus programas.`,
@@ -511,6 +511,7 @@ function applyLang(l){
   document.querySelectorAll('[data-t]').forEach(el=>{const v=t(el.dataset.t);if(el.hasAttribute('data-html'))el.innerHTML=v;else el.textContent=v});
   $('#map').setAttribute('aria-label',t('mapLabel'));
   $('#pKids').placeholder=t('kidsPh');
+  $('#zip').placeholder=t('zipPh');
   fillControls();syncWho();renderZip();
   if(current)setFormTitle();
   render();

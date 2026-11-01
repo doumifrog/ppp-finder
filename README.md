@@ -12,6 +12,7 @@ Built by Duke Global Research and Consulting for Parent Possible, fall 2026.
 | `template.html` | The source for `index.html`, before the data is filled in. Edit this, not `index.html`. |
 | `data/sites.json` | The 33 PAT and HIPPY sites, cleaned from the "Overall" tab of the Site Update spreadsheet. |
 | `data/co_counties.json` | Colorado county map shapes. |
+| `data/co_zips.json` | Each Colorado ZIP code and the counties it falls in (HUD ZIP-to-county crosswalk). Rebuild with `scripts/make-zips.py`. |
 | `scripts/` | Scripts that rebuild the data and the page. |
 | `wordpress-plugin/` | A small WordPress plugin that puts the finder on any page with `[program_finder]`. |
 

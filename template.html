@@ -63,6 +63,14 @@ a:hover{color:var(--accent)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .sw{width:14px;height:14px;border-radius:3px;display:inline-block}
 .tip{font-size:13px;color:var(--muted);margin:4px 0 0}
+.zipbox{background:var(--teal-soft);border-radius:var(--r);padding:14px;display:grid;gap:8px}
+.zipbox h2{font-size:16px;font-weight:700;margin:0;color:var(--teal-dark)}
+.ziprow{display:flex;gap:8px}
+.ziprow input{background:var(--surface);flex:1;min-width:0;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.ziprow .btn{flex:none;background:var(--teal);color:#ffffff}
+.ziprow .btn:hover{background:var(--teal-dark)}
+.zipmsg{margin:0;font-size:14px}
+.zipmsg.bad{color:#b3261e}
 .explain{display:grid;gap:10px}
 .explain h2{font-size:16px;font-weight:700;margin:0;color:var(--teal-dark)}
 .prog{border-radius:var(--r);padding:12px 14px;display:grid;gap:4px}
@@ -127,7 +135,7 @@ dialog::backdrop{background:rgba(10,20,20,.5)}
 .err{color:#b3261e;font-size:13px}
 .foot{font-size:13px;color:var(--muted)}
 @media (max-width:980px){.bar{grid-template-columns:1fr 1fr}.bar .resetwrap{grid-column:1/-1}}
-@media (max-width:860px){.main{grid-template-columns:1fr}.side{display:contents}.mapbox{order:1}.results{order:2}.explain{order:3}}
+@media (max-width:860px){.main{grid-template-columns:1fr}.side{display:contents}.mapbox{order:1}.zipbox{order:2}.results{order:3}.explain{order:4}}
 @media (max-width:480px){.bar{grid-template-columns:1fr}.dlg .row{grid-template-columns:1fr}}
 @media (hover:none){.maptip{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -178,6 +186,14 @@ dialog::backdrop{background:rgba(10,20,20,.5)}
         </div>
         <p class="tip" data-t="tip">Click a county on the map, or choose it from the list.</p>
       </div>
+      <form class="zipbox" id="zipForm" novalidate>
+        <h2><label for="zip" data-t="zipH">Don't know your county? Enter your ZIP code</label></h2>
+        <div class="ziprow">
+          <input id="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="80216">
+          <button class="btn" type="submit" data-t="zipGo">Find my county</button>
+        </div>
+        <div id="zipOut" aria-live="polite"></div>
+      </form>
       <section class="explain" aria-labelledby="exH">
         <h2 id="exH" data-t="exH">PAT or HIPPY?</h2>
         <div class="prog PAT"><h3 data-t="exPatH">Parents as Teachers (PAT)</h3><p data-t="exPat">For families from pregnancy until kindergarten. A parent educator visits your home with activities that help your child learn and grow, and checks on how your child is developing.</p></div>
@@ -249,6 +265,7 @@ dialog::backdrop{background:rgba(10,20,20,.5)}
 <script>
 const SITES=__SITES__;
 const MAP=__MAP__;
+const ZIPS=__ZIPS__;
 const AGES=['Prenatal','Birth to 1','1 to 2','2 to 3','3 to 4','4 to 5','5 and older'];
 const PP_INBOX='[Parent Possible intake inbox]';
 const TIMES=['Any time','Weekday mornings','Weekday afternoons','Evenings','Weekends'];
@@ -263,6 +280,11 @@ en:{
   anyLang:'Any language', legHas:'Has a program', legSel:'Selected',
   tip:'Click a county on the map, or choose it from the list.', mapLabel:'Map of Colorado counties. Click a county to choose it.',
   both:'PAT and HIPPY',
+  zipH:"Don't know your county? Enter your ZIP code", zipGo:'Find my county',
+  zipBad:'Enter a 5-digit ZIP code.', zipUnknown:z=>`We couldn't find ZIP code ${z} in Colorado. Choose your county from the list above instead.`,
+  zipNone:z=>`No PAT or HIPPY program serves ZIP code ${z} yet.`,
+  zipOne:(z,c)=>`ZIP code ${z} is in ${c} County. Showing programs there.`,
+  zipMany:z=>`ZIP code ${z} crosses more than one county. Which one do you live in?`,
   exH:'PAT or HIPPY?', exPatH:'Parents as Teachers (PAT)',
   exPat:'For families from pregnancy until kindergarten. A parent educator visits your home with activities that help your child learn and grow, and checks on how your child is developing.',
   exHippy:'For families with children ages 2 to 5. A home visitor from your community brings books and activities each week so you can help your child get ready for school.',
@@ -299,6 +321,11 @@ es:{
   anyLang:'Cualquier idioma', legHas:'Tiene un programa', legSel:'Seleccionado',
   tip:'Haga clic en un condado del mapa o elíjalo de la lista.', mapLabel:'Mapa de los condados de Colorado. Haga clic en un condado para elegirlo.',
   both:'PAT y HIPPY',
+  zipH:'¿No sabe su condado? Escriba su código postal', zipGo:'Buscar mi condado',
+  zipBad:'Escriba un código postal de 5 dígitos.', zipUnknown:z=>`No encontramos el código postal ${z} en Colorado. Elija su condado de la lista de arriba.`,
+  zipNone:z=>`Todavía no hay un programa PAT o HIPPY para el código postal ${z}.`,
+  zipOne:(z,c)=>`El código postal ${z} está en el condado de ${c}. Aquí están sus programas.`,
+  zipMany:z=>`El código postal ${z} abarca más de un condado. ¿En cuál vive usted?`,
   exH:'¿PAT o HIPPY?', exPatH:'Padres como Maestros (PAT)',
   exPat:'Para familias desde el embarazo hasta el kínder. Una educadora visita su casa con actividades que ayudan a su hijo/a a aprender y crecer, y revisa cómo va su desarrollo.',
   exHippy:'Para familias con niños de 2 a 5 años. Una visitadora de su comunidad le trae libros y actividades cada semana para que usted ayude a su hijo/a a prepararse para la escuela.',
@@ -366,7 +393,7 @@ MAP.forEach(m=>{
   const p=document.createElementNS(svgNS,'path');p.setAttribute('d',m.d);p.dataset.n=m.n;
   if(cover[m.n]){
     p.classList.add('on');
-    p.addEventListener('click',()=>setCounty(state.county===m.n?'':m.n));
+    p.addEventListener('click',()=>pickCounty(state.county===m.n?'':m.n));
     p.addEventListener('mousemove',e=>showTip(e,m.n));
     p.addEventListener('mouseleave',()=>{tip.hidden=true});
   }
@@ -381,7 +408,8 @@ MAP.forEach(m=>{
 }));
 
 function setCounty(c){state.county=c;$('#county').value=c;render()}
-$('#county').addEventListener('change',e=>setCounty(e.target.value));
+function pickCounty(c){zipState=null;renderZip();setCounty(c)}
+$('#county').addEventListener('change',e=>pickCounty(e.target.value));
 $('#age').addEventListener('change',e=>{state.age=e.target.value;render()});
 $('#lang').addEventListener('change',e=>{state.lang=e.target.value;render()});
 document.querySelectorAll('.chip[data-prog]').forEach(b=>b.addEventListener('click',()=>{
@@ -389,7 +417,35 @@ document.querySelectorAll('.chip[data-prog]').forEach(b=>b.addEventListener('cli
   if(state.progs.has(p)){if(state.progs.size===1)return;state.progs.delete(p)}else state.progs.add(p);
   b.setAttribute('aria-pressed',state.progs.has(p));render();
 }));
+// ZIP code lookup: turns a ZIP into the county (or counties) it falls in, then filters by county as usual.
+let zipState=null;
+function renderZip(){
+  const out=$('#zipOut');
+  if(!zipState){out.innerHTML='';return}
+  const {kind,zip,list}=zipState;
+  if(kind==='many')out.innerHTML=`<p class="zipmsg">${esc(t('zipMany')(zip))}</p><div class="chips">${list.map(c=>`<button type="button" class="chip" data-zc="${esc(c)}"${state.county===c?' aria-pressed="true" style="border-color:var(--teal);font-weight:700"':''}>${esc(t('county')(c))}</button>`).join('')}</div>`;
+  else{
+    const msg=kind==='bad'?t('zipBad'):kind==='unknown'?t('zipUnknown')(zip):kind==='none'?t('zipNone')(zip):t('zipOne')(zip,list[0]);
+    out.innerHTML=`<p class="zipmsg${kind==='one'?'':' bad'}">${esc(msg)}</p>`;
+  }
+}
+$('#zipForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const zip=$('#zip').value.trim();
+  if(!/^\d{5}$/.test(zip))zipState={kind:'bad',zip};
+  else if(!ZIPS[zip])zipState={kind:'unknown',zip};
+  else{
+    const served=ZIPS[zip].filter(c=>cover[c]);
+    zipState={kind:served.length===0?'none':served.length===1?'one':'many',zip,list:served};
+    if(served.length===1)setCounty(served[0]);
+  }
+  renderZip();
+});
+$('#zipOut').addEventListener('click',e=>{const b=e.target.closest('[data-zc]');if(b){setCounty(b.dataset.zc);renderZip()}});
+$('#zip').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,5)});
+
 function resetAll(){
+  zipState=null;$('#zip').value='';renderZip();
   state.county='';state.age='';state.lang='';state.progs=new Set(['PAT','HIPPY']);
   $('#county').value='';$('#age').value='';$('#lang').value='';
   document.querySelectorAll('.chip[data-prog]').forEach(b=>b.setAttribute('aria-pressed','true'));render();
@@ -455,7 +511,7 @@ function applyLang(l){
   document.querySelectorAll('[data-t]').forEach(el=>{const v=t(el.dataset.t);if(el.hasAttribute('data-html'))el.innerHTML=v;else el.textContent=v});
   $('#map').setAttribute('aria-label',t('mapLabel'));
   $('#pKids').placeholder=t('kidsPh');
-  fillControls();syncWho();
+  fillControls();syncWho();renderZip();
   if(current)setFormTitle();
   render();
 }

@@ -47,7 +47,13 @@ window.addEventListener('message', function (e) {
 </script>
 ```
 
+## Language
+
+The page has an English/Español toggle. It opens in Spanish when the visitor's browser is set to Spanish, remembers the visitor's choice, and can be forced with `?lang=es` or `?lang=en` on the page link. All page text is in the `T` object near the top of the script in `template.html`.
+
 ## Still to do before launch
+
+- Have a native Spanish speaker at Parent Possible review the Spanish text.
 
 - The interest form is a mock. It shows the email it would send but doesn't send anything. Sending needs a form service (for example Formspree or a WordPress form plugin like Gravity Forms) and Parent Possible's intake email for the CC.
 - Only 12 of 33 sites have an email on file (all 11 HIPPY sites and Roots Family Center PAT). Requests for the other sites go to Parent Possible to forward.

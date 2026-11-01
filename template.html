@@ -4,15 +4,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
 <style>
-/* Layout: finder bar on top, county map + result list side by side, stacking on phones. Built to sit inside a WordPress iframe. */
+/* Layout: teal title band, filter bar, then county map + result list side by side, stacking on phones. Built to sit inside a WordPress iframe. */
 :root{
   /* Parent Possible palette: white page, teal and coral-orange, warm gray text */
   --bg:#ffffff; --surface:#ffffff; --field:#f6f9f9; --ink:#2c3b3e; --muted:#636e70; --line:#dce5e6;
-  --accent:#e8603c; --accent-hover:#d24f2c; --accent-ink:#ffffff;
-  --teal:#2e7f86; --teal-dark:#1f5f66; --teal-soft:#e3f1f2;
+  --accent:#e8603c; --accent-hover:#d24f2c; --accent-ink:#ffffff; --accent-light:#ffb497;
+  --teal:#2e7f86; --teal-dark:#1f5f66; --teal-deep:#174a50; --teal-soft:#e3f1f2;
   --pat:#2e7f86; --pat-soft:#e3f1f2; --hippy:#c4491f; --hippy-soft:#fdebe4;
-  --map-empty:#f1f4f4; --map-cover:#9fcfd3; --map-both:#2e7f86; --map-sel:#e8603c; --map-stroke:#ffffff;
-  --warn-soft:#fdf1ec; --focus:#2e7f86;
+  --map-empty:#eef2f2; --map-cover:#5fa6ac; --map-sel:#e8603c; --map-stroke:#ffffff;
+  --warn-soft:#fdf1ec; --focus:#2e7f86; --on-band:#ffffff; --on-band-muted:#d3e8ea;
   --f-display:"Montserrat", "Avenir Next", "Segoe UI", sans-serif;
   --f-body:"Montserrat", "Avenir Next", "Segoe UI", sans-serif;
   --r:10px;
@@ -21,12 +21,22 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
-.wrap{max-width:1180px;margin:0 auto;padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:20px}
+.gutter{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.inner{max-width:1180px;margin:0 auto}
+.band{background:linear-gradient(135deg,var(--teal-dark),var(--teal-deep));color:var(--on-band);padding-block:28px 32px}
+.band .inner{display:grid;gap:10px}
+.bandtop{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-light)}
+.langs{display:inline-flex;border:1.5px solid rgba(255,255,255,.5);border-radius:999px;overflow:hidden}
+.langs button{font:inherit;font-size:14px;font-weight:600;border:0;background:transparent;color:var(--on-band);padding:6px 14px;cursor:pointer}
+.langs button[aria-pressed="true"]{background:var(--on-band);color:var(--teal-dark)}
+h1{font-family:var(--f-display);font-weight:700;color:var(--on-band);font-size:clamp(28px,4vw,42px);line-height:1.12;margin:0;text-wrap:balance;letter-spacing:-.01em;max-width:22ch}
+h1 em{font-style:normal;color:var(--accent-light)}
+.lede{margin:0;max-width:62ch;color:var(--on-band-muted)}
+.wrap{padding-block:20px 48px;display:grid;gap:20px}
 .proto{font-size:13px;color:var(--muted);border:1px dashed var(--line);border-radius:var(--r);padding:8px 12px}
 .proto b{color:var(--ink)}
-h1{font-family:var(--f-display);font-weight:700;color:var(--accent);font-size:clamp(28px,4vw,40px);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.01em}
-.lede{margin:6px 0 0;max-width:62ch;color:var(--muted)}
-.bar{display:grid;grid-template-columns:1.6fr 1.7fr 1fr 1fr;gap:12px;background:var(--teal-soft);border:0;border-radius:var(--r);padding:14px}
+.bar{display:grid;grid-template-columns:1.6fr 1.7fr 1fr 1fr auto;gap:12px;align-items:end;background:var(--teal-soft);border-radius:var(--r);padding:14px}
 .field{display:grid;gap:4px;min-width:0}
 .field label,.lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 select,input,textarea{font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
@@ -39,29 +49,54 @@ a:hover{color:var(--accent)}
 .chip{font:inherit;font-size:14px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 12px;cursor:pointer}
 .chip[aria-pressed="true"].pat{background:var(--pat);border-color:var(--pat);color:var(--surface)}
 .chip[aria-pressed="true"].hippy{background:var(--hippy);border-color:var(--hippy);color:var(--surface)}
+.reset{font:inherit;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--teal);background:var(--surface);color:var(--teal-dark);border-radius:8px;padding:9px 14px;cursor:pointer;white-space:nowrap}
+.reset:hover{background:var(--teal);color:var(--surface)}
+.reset:disabled{opacity:.45;cursor:default;background:var(--surface);color:var(--teal-dark)}
 .main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:20px;align-items:start}
-.mapbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;position:sticky;top:12px}
+.side{display:grid;gap:14px;position:sticky;top:12px}
+.mapbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;position:relative}
 .mapbox svg{width:100%;height:auto;display:block}
 .mapbox path{fill:var(--map-empty);stroke:var(--map-stroke);stroke-width:1;transition:fill .15s}
-.mapbox path.c1,.mapbox path.c2{cursor:pointer}
-.mapbox path.c1{fill:var(--map-cover)}
-.mapbox path.c2{fill:var(--map-both)}
-.mapbox path.c1:hover,.mapbox path.c2:hover{fill:var(--accent);opacity:.6}
-.mapbox path.sel{fill:var(--map-sel);opacity:1}
-.mapbox text{font-family:var(--f-body);font-size:9px;font-weight:500;fill:var(--ink);pointer-events:none;text-anchor:middle;paint-order:stroke;stroke:#ffffff;stroke-width:2.5px;stroke-linejoin:round}
+.mapbox path.on{fill:var(--map-cover);cursor:pointer}
+.mapbox path.on:hover{fill:var(--teal-dark)}
+.mapbox path.sel,.mapbox path.sel:hover{fill:var(--map-sel)}
+.mapbox text{font-family:var(--f-body);font-size:9px;font-weight:600;fill:var(--ink);pointer-events:none;text-anchor:middle;paint-order:stroke;stroke:#ffffff;stroke-width:2.5px;stroke-linejoin:round}
+.maptip{position:absolute;pointer-events:none;background:var(--ink);color:#ffffff;border-radius:8px;padding:6px 10px;font-size:13px;line-height:1.35;white-space:nowrap;transform:translate(-50%,calc(-100% - 12px));box-shadow:0 4px 14px rgba(20,40,40,.18)}
+.maptip b{display:block;font-weight:700}
+.maptip span{color:#cfe3e5}
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:8px}
 .legend span{display:inline-flex;align-items:center;gap:6px}
-.sw{width:14px;height:14px;border-radius:3px;display:inline-block;border:1px solid var(--line)}
+.sw{width:14px;height:14px;border-radius:3px;display:inline-block}
 .tip{font-size:13px;color:var(--muted);margin:4px 0 0}
-.results{display:grid;gap:12px;min-width:0}
+.explain{display:grid;gap:10px}
+.explain h2{font-size:16px;font-weight:700;margin:0;color:var(--teal-dark)}
+.prog{border-radius:var(--r);padding:12px 14px;display:grid;gap:4px}
+.prog.PAT{background:var(--pat-soft)}
+.prog.HIPPY{background:var(--hippy-soft)}
+.prog h3{margin:0;font-size:15px;font-weight:700}
+.prog.PAT h3{color:var(--pat)}
+.prog.HIPPY h3{color:var(--hippy)}
+.prog p{margin:0;font-size:14px}
+.results{display:grid;gap:10px;min-width:0}
 .rhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
 .rhead h2{font-family:var(--f-display);font-weight:700;font-size:22px;margin:0;color:var(--teal-dark)}
 .rhead .count{color:var(--muted);font-size:14px}
-.linkbtn{font:inherit;font-size:14px;background:none;border:0;color:var(--pat);text-decoration:underline;cursor:pointer;padding:0}
+.hint{font-size:13px;color:var(--muted);margin:-4px 0 2px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;gap:10px;min-width:0}
 .card .top{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
 .card h3{margin:0;font-size:18px;line-height:1.3;font-weight:700;color:var(--teal-dark)}
 .card .where{color:var(--muted);font-size:14px;margin:2px 0 0}
+details.card{padding:0;gap:0}
+details.card>summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;gap:12px;align-items:center;border-radius:var(--r)}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{background:var(--field)}
+details.card[open]>summary{border-bottom:1px solid var(--line);border-radius:var(--r) var(--r) 0 0}
+details.card .sumtext{flex:1;min-width:0}
+details.card h3{font-size:16px}
+details.card .where{font-size:13px;margin:0}
+.chev{flex:none;width:10px;height:10px;border-right:2px solid var(--teal);border-bottom:2px solid var(--teal);transform:rotate(45deg);margin:0 4px 4px 0;transition:transform .15s}
+details[open] .chev{transform:rotate(-135deg);margin:4px 4px 0 0}
+details.card .body{padding:14px 16px 16px;display:grid;gap:10px}
 .badge{flex:none;font-size:12px;font-weight:700;letter-spacing:.05em;border-radius:6px;padding:3px 8px}
 .badge.PAT{background:var(--pat-soft);color:var(--pat)}
 .badge.HIPPY{background:var(--hippy-soft);color:var(--hippy)}
@@ -96,119 +131,130 @@ dialog::backdrop{background:rgba(10,20,20,.5)}
 .preview{background:var(--field);border:1px solid var(--line);border-radius:8px;padding:12px;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:300px;overflow:auto}
 .err{color:#b3261e;font-size:13px}
 .foot{font-size:13px;color:var(--muted)}
-@media (max-width:860px){.bar{grid-template-columns:1fr 1fr}.main{grid-template-columns:1fr}.mapbox{position:static}}
+@media (max-width:980px){.bar{grid-template-columns:1fr 1fr}.bar .resetwrap{grid-column:1/-1}}
+@media (max-width:860px){.main{grid-template-columns:1fr}.side{display:contents}.mapbox{order:1}.results{order:2}.explain{order:3}}
 @media (max-width:480px){.bar{grid-template-columns:1fr}.dlg .row{grid-template-columns:1fr}}
+@media (hover:none){.maptip{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
-<div class="wrap">
-  <div class="proto"><b>Prototype for review.</b> Built by Duke GRC for Parent Possible using the 2025-26 site list. Interest requests are not sent anywhere yet.</div>
+<header class="band gutter">
+  <div class="inner">
+    <div class="bandtop">
+      <span class="eyebrow" data-t="eyebrow">Parent Possible · Program Finder</span>
+      <div class="langs" role="group" aria-label="Language / Idioma">
+        <button type="button" id="lnEn" data-ln="en" lang="en" aria-pressed="true">English</button>
+        <button type="button" id="lnEs" data-ln="es" lang="es" aria-pressed="false">Español</button>
+      </div>
+    </div>
+    <h1 data-t="h1" data-html>Find a home visiting program <em>near you</em></h1>
+    <p class="lede" data-t="lede">Parents as Teachers and HIPPY home visitors come to your home. Pick the county you live in to see which programs serve it, then let a program know you're interested.</p>
+  </div>
+</header>
 
-  <header>
-    <h1>Find a home visiting program near you</h1>
-    <p class="lede">Parents as Teachers and HIPPY home visitors come to your home. Pick the county you live in to see which programs serve it, then let a program know you're interested.</p>
-  </header>
+<div class="wrap gutter">
+ <div class="inner" style="display:grid;gap:20px">
+  <div class="proto" data-t="proto" data-html><b>Prototype for review.</b> Built by Duke GRC for Parent Possible using the 2025-26 site list. Interest requests are not sent anywhere yet.</div>
 
   <div class="bar" role="search">
     <div class="field">
-      <label for="county">County you live in</label>
-      <select id="county"><option value="">All Colorado counties</option></select>
+      <label for="county" data-t="countyLbl">County you live in</label>
+      <select id="county"></select>
     </div>
     <div class="field">
-      <span class="lbl" id="proglbl">Program</span>
+      <span class="lbl" id="proglbl" data-t="progLbl">Program</span>
       <div class="chips" role="group" aria-labelledby="proglbl">
-        <button class="chip pat" id="fPAT" aria-pressed="true" data-prog="PAT">Parents as Teachers</button>
+        <button class="chip pat" id="fPAT" aria-pressed="true" data-prog="PAT" data-t="patName">Parents as Teachers</button>
         <button class="chip hippy" id="fHIPPY" aria-pressed="true" data-prog="HIPPY">HIPPY</button>
       </div>
     </div>
     <div class="field">
-      <label for="age">Child's age</label>
-      <select id="age">
-        <option value="">Any age</option>
-        <option value="0">Expecting a baby</option>
-        <option value="1">Under 1 year</option>
-        <option value="2">1 year old</option>
-        <option value="3">2 years old</option>
-        <option value="4">3 years old</option>
-        <option value="5">4 years old</option>
-        <option value="6">5 or older</option>
-      </select>
+      <label for="age" data-t="ageLbl">Child's age</label>
+      <select id="age"></select>
     </div>
     <div class="field">
-      <label for="lang">Language</label>
-      <select id="lang"><option value="">Any language</option></select>
+      <label for="lang" data-t="langLbl">Language</label>
+      <select id="lang"></select>
     </div>
+    <div class="resetwrap"><button type="button" class="reset" id="reset" data-t="reset">Reset filters</button></div>
   </div>
 
   <div class="main">
-    <div class="mapbox">
-      <svg id="map" viewBox="0 0 760 560" role="img" aria-label="Map of Colorado counties. Click a county to choose it."></svg>
-      <div class="legend">
-        <span><i class="sw" style="background:var(--map-both)"></i>PAT and HIPPY</span>
-        <span><i class="sw" style="background:var(--map-cover)"></i>One program</span>
-        <span><i class="sw" style="background:var(--map-sel)"></i>Selected</span>
+    <div class="side">
+      <div class="mapbox" id="mapbox">
+        <svg id="map" viewBox="0 0 760 560" role="img"></svg>
+        <div class="maptip" id="maptip" hidden></div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--map-cover)"></i><span data-t="legHas">Has a program</span></span>
+          <span><i class="sw" style="background:var(--map-sel)"></i><span data-t="legSel">Selected</span></span>
+        </div>
+        <p class="tip" data-t="tip">Click a county on the map, or choose it from the list.</p>
       </div>
-      <p class="tip">Tip: click a county on the map, or choose it from the list.</p>
+      <section class="explain" aria-labelledby="exH">
+        <h2 id="exH" data-t="exH">PAT or HIPPY?</h2>
+        <div class="prog PAT"><h3 data-t="exPatH">Parents as Teachers (PAT)</h3><p data-t="exPat">For families from pregnancy until kindergarten. A parent educator visits your home with activities that help your child learn and grow, and checks on how your child is developing.</p></div>
+        <div class="prog HIPPY"><h3>HIPPY</h3><p data-t="exHippy">For families with children ages 2 to 5. A home visitor from your community brings books and activities each week so you can help your child get ready for school.</p></div>
+      </section>
     </div>
     <section class="results" id="results" aria-live="polite"></section>
   </div>
 
-  <p class="foot">Programs are listed by the counties they serve, not by office location. A program's office may be in a nearby town, since home visitors travel to families.</p>
+  <p class="foot" data-t="foot">Programs are listed by the counties they serve, not by office location. A program's office may be in a nearby town, since home visitors travel to families.</p>
+ </div>
 </div>
 
 <dialog id="dlg">
   <form class="dlg" id="form" novalidate>
     <div>
-      <h2 id="dlgTitle">Tell this program you're interested</h2>
+      <h2 id="dlgTitle"></h2>
       <p class="note" id="dlgSub" style="margin:4px 0 0"></p>
     </div>
     <fieldset>
-      <span class="lbl">Who is filling this out?</span>
+      <span class="lbl" data-t="fWho">Who is filling this out?</span>
       <div class="radios">
-        <label><input type="radio" name="who" id="whoParent" value="parent" checked> A parent or caregiver</label>
-        <label><input type="radio" name="who" id="whoWorker" value="worker"> A caseworker or provider referring a family</label>
+        <label><input type="radio" name="who" id="whoParent" value="parent" checked> <span data-t="fParent">A parent or caregiver</span></label>
+        <label><input type="radio" name="who" id="whoWorker" value="worker"> <span data-t="fWorker">A caseworker or provider referring a family</span></label>
       </div>
     </fieldset>
     <div class="row" id="workerRow" hidden>
-      <div class="field"><label for="wName">Your name</label><input id="wName" autocomplete="name"></div>
-      <div class="field"><label for="wOrg">Your organization</label><input id="wOrg" autocomplete="organization"></div>
+      <div class="field"><label for="wName" data-t="fWName">Your name</label><input id="wName" autocomplete="name"></div>
+      <div class="field"><label for="wOrg" data-t="fWOrg">Your organization</label><input id="wOrg" autocomplete="organization"></div>
     </div>
     <div class="row">
-      <div class="field"><label for="pName" id="pNameLbl">Your first name</label><input id="pName" autocomplete="given-name" required></div>
-      <div class="field"><label for="pLang">Language you'd like to use</label><select id="pLang"></select></div>
+      <div class="field"><label for="pName" id="pNameLbl"></label><input id="pName" autocomplete="given-name" required></div>
+      <div class="field"><label for="pLang" data-t="fLang">Language you'd like to use</label><select id="pLang"></select></div>
     </div>
     <fieldset>
-      <span class="lbl">Best way to reach <span id="reachWho">you</span></span>
+      <span class="lbl" id="reachLbl"></span>
       <div class="radios">
-        <label><input type="radio" name="how" id="howCall" value="Phone call" checked> Phone call</label>
-        <label><input type="radio" name="how" id="howText" value="Text message"> Text</label>
-        <label><input type="radio" name="how" id="howEmail" value="Email"> Email</label>
+        <label><input type="radio" name="how" id="howCall" value="Phone call" checked> <span data-t="howCall">Phone call</span></label>
+        <label><input type="radio" name="how" id="howText" value="Text message"> <span data-t="howText">Text</span></label>
+        <label><input type="radio" name="how" id="howEmail" value="Email"> <span data-t="howEmail">Email</span></label>
       </div>
     </fieldset>
     <div class="row">
-      <div class="field"><label for="pPhone">Phone</label><input id="pPhone" type="tel" autocomplete="tel"></div>
-      <div class="field"><label for="pEmail">Email</label><input id="pEmail" type="email" autocomplete="email"></div>
+      <div class="field"><label for="pPhone" data-t="phone">Phone</label><input id="pPhone" type="tel" autocomplete="tel"></div>
+      <div class="field"><label for="pEmail" data-t="email">Email</label><input id="pEmail" type="email" autocomplete="email"></div>
     </div>
     <div class="row">
-      <div class="field"><label for="pKids">Child's age (or due date)</label><input id="pKids" placeholder="e.g. 2 years, or due in March"></div>
-      <div class="field"><label for="pTime">Best time to reach</label>
-        <select id="pTime"><option>Any time</option><option>Weekday mornings</option><option>Weekday afternoons</option><option>Evenings</option><option>Weekends</option></select></div>
+      <div class="field"><label for="pKids" data-t="fKids">Child's age (or due date)</label><input id="pKids"></div>
+      <div class="field"><label for="pTime" data-t="fTime">Best time to reach</label><select id="pTime"></select></div>
     </div>
-    <div class="field"><label for="pNote">Anything you'd like them to know? (optional)</label><textarea id="pNote"></textarea></div>
-    <div class="privacy"><b>Your privacy.</b> We only ask what a home visitor needs to call you back. We will never ask about immigration status, and you do not need to share it. Your request goes to this program and to Parent Possible, who checks that someone follows up.</div>
-    <label class="check"><input type="checkbox" id="consent"> It's OK for this program to contact <span id="consentWho">me.</span></label>
+    <div class="field"><label for="pNote" data-t="fNote">Anything you'd like them to know? (optional)</label><textarea id="pNote"></textarea></div>
+    <div class="privacy" data-t="privacy" data-html></div>
+    <label class="check"><input type="checkbox" id="consent"> <span id="consentLbl"></span></label>
     <p class="err" id="err" hidden></p>
     <div class="actions">
-      <button class="btn" type="submit">Send my request</button>
-      <button class="btn ghost" type="button" id="cancel">Cancel</button>
+      <button class="btn" type="submit" data-t="send">Send my request</button>
+      <button class="btn ghost" type="button" id="cancel" data-t="cancel">Cancel</button>
     </div>
   </form>
   <div class="dlg" id="done" hidden>
-    <h2>Request ready</h2>
+    <h2 data-t="doneH">Request ready</h2>
     <p style="margin:0" id="doneMsg"></p>
-    <span class="lbl">Prototype: this is the email that would be sent</span>
+    <span class="lbl" data-t="previewLbl">Prototype: this is the email that would be sent</span>
     <div class="preview" id="preview"></div>
-    <div class="actions"><button class="btn" type="button" id="close">Close</button></div>
+    <div class="actions"><button class="btn" type="button" id="close" data-t="close">Close</button></div>
   </div>
 </dialog>
 
@@ -216,30 +262,135 @@ dialog::backdrop{background:rgba(10,20,20,.5)}
 const SITES=__SITES__;
 const MAP=__MAP__;
 const AGES=['Prenatal','Birth to 1','1 to 2','2 to 3','3 to 4','4 to 5','5 and older'];
-const AGE_SHORT=['Prenatal','0–1','1–2','2–3','3–4','4–5','5+'];
 const PP_INBOX='[Parent Possible intake inbox]';
+const TIMES=['Any time','Weekday mornings','Weekday afternoons','Evenings','Weekends'];
+
+// All page text in English and Spanish. The Spanish should be checked by a native speaker at Parent Possible.
+const T={
+en:{
+  eyebrow:'Parent Possible · Program Finder',
+  h1:'Find a home visiting program <em>near you</em>',
+  lede:"Parents as Teachers and HIPPY home visitors come to your home. Pick the county you live in to see which programs serve it, then let a program know you're interested.",
+  proto:'<b>Prototype for review.</b> Built by Duke GRC for Parent Possible using the 2025-26 site list. Interest requests are not sent anywhere yet.',
+  countyLbl:'County you live in', allCounties:'All Colorado counties', county:n=>n+' County',
+  progLbl:'Program', patName:'Parents as Teachers', ageLbl:"Child's age", langLbl:'Language', reset:'Reset filters',
+  anyAge:'Any age', ageOpts:['Expecting a baby','Under 1 year','1 year old','2 years old','3 years old','4 years old','5 or older'],
+  anyLang:'Any language', legHas:'Has a program', legSel:'Selected',
+  tip:'Click a county on the map, or choose it from the list.', mapLabel:'Map of Colorado counties. Click a county to choose it.',
+  both:'PAT and HIPPY',
+  exH:'PAT or HIPPY?', exPatH:'Parents as Teachers (PAT)',
+  exPat:'For families from pregnancy until kindergarten. A parent educator visits your home with activities that help your child learn and grow, and checks on how your child is developing.',
+  exHippy:'For families with children ages 2 to 5. A home visitor from your community brings books and activities each week so you can help your child get ready for school.',
+  foot:"Programs are listed by the counties they serve, not by office location. A program's office may be in a nearby town, since home visitors travel to families.",
+  resTitle:c=>c?`Programs serving ${c} County`:'All PAT and HIPPY programs in Colorado',
+  count:n=>n+(n===1?' program':' programs'), hint:'Tap a program to see ages, phone, and website.',
+  office:c=>'Office in '+c, serves:cs=>'Serves '+cs.join(', ')+(cs.length>1?' counties':' County'),
+  ages:'Ages', langs:'Languages', phone:'Phone', website:'Website', notListed:'Not listed',
+  ageShort:['Prenatal','0–1','1–2','2–3','3–4','4–5','5+'],
+  interested:"I'm interested", noEmail:'No email on file. Parent Possible will pass your request along.',
+  emptyH:'No programs match all of those filters',
+  emptyP:c=>(c?c+' County has programs, but none match your choices for age, language, or program.':'Try fewer filters.')+" Programs can sometimes arrange interpreters, so it's still worth reaching out.",
+  dlgTitle:n=>`Tell ${n} you're interested`, dlgSub:(p,cs)=>`${p} · serves ${cs.join(', ')}`,
+  fWho:'Who is filling this out?', fParent:'A parent or caregiver', fWorker:'A caseworker or provider referring a family',
+  fWName:'Your name', fWOrg:'Your organization', fName:'Your first name', fNameW:"Parent or caregiver's first name",
+  fLang:"Language you'd like to use", reach:'Best way to reach you', reachW:'Best way to reach the family',
+  howCall:'Phone call', howText:'Text', howEmail:'Email', email:'Email',
+  fKids:"Child's age (or due date)", kidsPh:'e.g. 2 years, or due in March', fTime:'Best time to reach',
+  times:TIMES, fNote:"Anything you'd like them to know? (optional)",
+  privacy:'<b>Your privacy.</b> We only ask what a home visitor needs to call you back. We will never ask about immigration status, and you do not need to share it. Your request goes to this program and to Parent Possible, who checks that someone follows up.',
+  consent:"It's OK for this program to contact me.", consentW:"It's OK for this program to contact this family (they agreed to be referred).",
+  send:'Send my request', cancel:'Cancel',
+  errName:'Add a first name.', errEmail:'Add an email address, or pick a different way to reach you.',
+  errPhone:'Add a 10-digit phone number, or pick email.', errConsent:'Check the box so the program knows it can contact you.',
+  doneH:'Request ready', previewLbl:'Prototype: this is the email that would be sent', close:'Close',
+  doneMsg:(n,how)=>`In the live version, ${n} would get this request and someone would reach out by ${how}. No message was sent from this prototype.`,
+  howWords:{'Phone call':'phone call','Text message':'text message','Email':'email'},
+},
+es:{
+  eyebrow:'Parent Possible · Buscador de programas',
+  h1:'Encuentre un programa de visitas al hogar <em>cerca de usted</em>',
+  lede:'El personal de Padres como Maestros (PAT) y de HIPPY visita a las familias en su casa. Elija el condado donde vive para ver qué programas lo atienden y avísele a un programa que le interesa.',
+  proto:'<b>Prototipo para revisión.</b> Hecho por Duke GRC para Parent Possible con la lista de sitios 2025-26. Las solicitudes todavía no se envían.',
+  countyLbl:'Condado donde vive', allCounties:'Todos los condados de Colorado', county:n=>'Condado de '+n,
+  progLbl:'Programa', patName:'Padres como Maestros', ageLbl:'Edad de su hijo/a', langLbl:'Idioma', reset:'Borrar filtros',
+  anyAge:'Cualquier edad', ageOpts:['Espera un bebé','Menos de 1 año','1 año','2 años','3 años','4 años','5 años o más'],
+  anyLang:'Cualquier idioma', legHas:'Tiene un programa', legSel:'Seleccionado',
+  tip:'Haga clic en un condado del mapa o elíjalo de la lista.', mapLabel:'Mapa de los condados de Colorado. Haga clic en un condado para elegirlo.',
+  both:'PAT y HIPPY',
+  exH:'¿PAT o HIPPY?', exPatH:'Padres como Maestros (PAT)',
+  exPat:'Para familias desde el embarazo hasta el kínder. Una educadora visita su casa con actividades que ayudan a su hijo/a a aprender y crecer, y revisa cómo va su desarrollo.',
+  exHippy:'Para familias con niños de 2 a 5 años. Una visitadora de su comunidad le trae libros y actividades cada semana para que usted ayude a su hijo/a a prepararse para la escuela.',
+  foot:'Los programas aparecen según los condados que atienden, no según dónde está su oficina. La oficina puede estar en otro pueblo, porque el personal viaja a donde viven las familias.',
+  resTitle:c=>c?`Programas en el condado de ${c}`:'Todos los programas PAT y HIPPY en Colorado',
+  count:n=>n+(n===1?' programa':' programas'), hint:'Toque un programa para ver edades, teléfono y sitio web.',
+  office:c=>'Oficina en '+c, serves:cs=>(cs.length>1?'Atiende los condados de ':'Atiende el condado de ')+cs.join(', '),
+  ages:'Edades', langs:'Idiomas', phone:'Teléfono', website:'Sitio web', notListed:'No disponible',
+  ageShort:['Prenatal','0–1','1–2','2–3','3–4','4–5','5+'],
+  interested:'Me interesa', noEmail:'Este programa no tiene correo registrado. Parent Possible le hará llegar su solicitud.',
+  emptyH:'Ningún programa coincide con todos esos filtros',
+  emptyP:c=>(c?'El condado de '+c+' tiene programas, pero ninguno coincide con la edad, el idioma o el programa que eligió.':'Pruebe con menos filtros.')+' A veces los programas pueden conseguir intérpretes, así que vale la pena comunicarse.',
+  dlgTitle:n=>`Dígale a ${n} que le interesa`, dlgSub:(p,cs)=>`${p} · atiende ${cs.join(', ')}`,
+  fWho:'¿Quién llena este formulario?', fParent:'Madre, padre o cuidador', fWorker:'Trabajador/a social o proveedor que refiere a una familia',
+  fWName:'Su nombre', fWOrg:'Su organización', fName:'Su nombre', fNameW:'Nombre de la madre, padre o cuidador',
+  fLang:'Idioma que prefiere', reach:'Mejor forma de comunicarse con usted', reachW:'Mejor forma de comunicarse con la familia',
+  howCall:'Llamada', howText:'Mensaje de texto', howEmail:'Correo electrónico', email:'Correo electrónico',
+  fKids:'Edad de su hijo/a (o fecha de parto)', kidsPh:'p. ej., 2 años, o nace en marzo', fTime:'Mejor horario',
+  times:['Cualquier hora','Mañanas entre semana','Tardes entre semana','Por la noche','Fines de semana'],
+  fNote:'¿Algo más que quiera contarles? (opcional)',
+  privacy:'<b>Su privacidad.</b> Solo pedimos lo que el programa necesita para llamarle. Nunca le preguntaremos sobre su estatus migratorio y no tiene que compartirlo. Su solicitud llega a este programa y a Parent Possible, que se asegura de que alguien le dé seguimiento.',
+  consent:'Está bien que este programa se comunique conmigo.', consentW:'Está bien que este programa se comunique con esta familia (aceptó ser referida).',
+  send:'Enviar mi solicitud', cancel:'Cancelar',
+  errName:'Escriba un nombre.', errEmail:'Escriba un correo electrónico o elija otra forma de comunicarse.',
+  errPhone:'Escriba un teléfono de 10 dígitos o elija correo electrónico.', errConsent:'Marque la casilla para que el programa sepa que puede comunicarse con usted.',
+  doneH:'Solicitud lista', previewLbl:'Prototipo: este es el correo que se enviaría', close:'Cerrar',
+  doneMsg:(n,how)=>`En la versión final, ${n} recibiría esta solicitud y alguien se comunicaría por ${how}. Este prototipo no envió ningún mensaje.`,
+  howWords:{'Phone call':'teléfono','Text message':'mensaje de texto','Email':'correo electrónico'},
+  langNames:{English:'Inglés',Spanish:'Español',Arabic:'Árabe',Burmese:'Birmano',Dari:'Darí',Farsi:'Farsi',French:'Francés',Hindi:'Hindi',Nepali:'Nepalí',Oromo:'Oromo',Pashto:'Pastún',Punjabi:'Panyabí',Swahili:'Suajili',Vietnamese:'Vietnamita'},
+}};
+
 const $=s=>document.querySelector(s);
 const state={county:'',progs:new Set(['PAT','HIPPY']),age:'',lang:''};
+let L='en';
+const t=k=>T[L][k];
+const langName=l=>(T[L].langNames&&T[L].langNames[l])||l;
+const progName=p=>p==='PAT'?t('patName'):'HIPPY';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 // coverage per county
 const cover={};
 SITES.forEach(s=>s.counties.forEach(c=>{(cover[c]=cover[c]||new Set()).add(s.program)}));
+const counties=MAP.map(m=>m.n).filter(n=>cover[n]);
+const langs=[...new Set(SITES.flatMap(s=>s.languages))].sort((a,b)=>a==='English'?-1:b==='English'?1:a==='Spanish'?-1:b==='Spanish'?1:a.localeCompare(b));
 
-// controls
-MAP.forEach(m=>{const o=document.createElement('option');o.value=m.n;if(!cover[m.n])return;o.textContent=m.n+' County';$('#county').append(o)});
-const langs=[...new Set(SITES.flatMap(s=>s.languages))].sort((a,b)=>a==='English'?-1:b==='English'?1:a.localeCompare(b));
-langs.forEach(l=>{$('#lang').append(new Option(l,l));$('#pLang').append(new Option(l,l))});
+function fillSelect(el,opts,value){el.innerHTML='';opts.forEach(([v,label])=>el.append(new Option(label,v)));el.value=value}
+function fillControls(){
+  fillSelect($('#county'),[['',t('allCounties')],...counties.map(n=>[n,t('county')(n)])],state.county);
+  fillSelect($('#age'),[['',t('anyAge')],...t('ageOpts').map((a,i)=>[String(i),a])],state.age);
+  fillSelect($('#lang'),[['',t('anyLang')],...langs.map(l=>[l,langName(l)])],state.lang);
+  const pl=$('#pLang').value;fillSelect($('#pLang'),langs.map(l=>[l,langName(l)]),pl||'English');
+  const pt=$('#pTime').value;fillSelect($('#pTime'),TIMES.map((v,i)=>[v,t('times')[i]]),pt||TIMES[0]);
+}
 
 // map
 const svgNS='http://www.w3.org/2000/svg';
+const tip=$('#maptip'),mapbox=$('#mapbox');
+function showTip(e,n){
+  const cv=cover[n];
+  tip.innerHTML=`<b>${esc(t('county')(n))}</b><span>${cv.size>1?t('both'):[...cv][0]==='PAT'?t('patName')+' (PAT)':'HIPPY'}</span>`;
+  const r=mapbox.getBoundingClientRect();
+  tip.style.left=(e.clientX-r.left)+'px';tip.style.top=(e.clientY-r.top)+'px';tip.hidden=false;
+}
 MAP.forEach(m=>{
   const p=document.createElementNS(svgNS,'path');p.setAttribute('d',m.d);p.dataset.n=m.n;
-  const cv=cover[m.n];p.setAttribute('class',cv?(cv.size>1?'c2':'c1'):'');
-  if(cv){const t=document.createElementNS(svgNS,'title');t.textContent=m.n+' County – '+[...cv].join(' and ');p.append(t);
-  p.addEventListener('click',()=>setCounty(state.county===m.n?'':m.n));}
+  if(cover[m.n]){
+    p.classList.add('on');
+    p.addEventListener('click',()=>setCounty(state.county===m.n?'':m.n));
+    p.addEventListener('mousemove',e=>showTip(e,m.n));
+    p.addEventListener('mouseleave',()=>{tip.hidden=true});
+  }
   $('#map').append(p);
 });
-MAP.forEach(m=>{if(!cover[m.n]||m.n.length>11||['Denver','Broomfield','Gilpin','Clear Creek'].includes(m.n))return;const t=document.createElementNS(svgNS,'text');t.setAttribute('x',m.x);t.setAttribute('y',m.y+3);t.textContent=m.n;$('#map').append(t)});
+MAP.forEach(m=>{if(!cover[m.n]||m.n.length>11||['Denver','Broomfield','Gilpin','Clear Creek'].includes(m.n))return;const x=document.createElementNS(svgNS,'text');x.setAttribute('x',m.x);x.setAttribute('y',m.y+3);x.textContent=m.n;$('#map').append(x)});
 
 function setCounty(c){state.county=c;$('#county').value=c;render()}
 $('#county').addEventListener('change',e=>setCounty(e.target.value));
@@ -250,55 +401,83 @@ document.querySelectorAll('.chip[data-prog]').forEach(b=>b.addEventListener('cli
   if(state.progs.has(p)){if(state.progs.size===1)return;state.progs.delete(p)}else state.progs.add(p);
   b.setAttribute('aria-pressed',state.progs.has(p));render();
 }));
-function clearFilters(){state.age='';state.lang='';state.progs=new Set(['PAT','HIPPY']);$('#age').value='';$('#lang').value='';document.querySelectorAll('.chip[data-prog]').forEach(b=>b.setAttribute('aria-pressed','true'));render()}
+function resetAll(){
+  state.county='';state.age='';state.lang='';state.progs=new Set(['PAT','HIPPY']);
+  $('#county').value='';$('#age').value='';$('#lang').value='';
+  document.querySelectorAll('.chip[data-prog]').forEach(b=>b.setAttribute('aria-pressed','true'));render();
+}
+$('#reset').addEventListener('click',resetAll);
 
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const progName=p=>p==='PAT'?'Parents as Teachers':'HIPPY';
-
-function matches(s,ignoreCounty){
-  if(!ignoreCounty&&state.county&&!s.counties.includes(state.county))return false;
+function matches(s){
+  if(state.county&&!s.counties.includes(state.county))return false;
   if(!state.progs.has(s.program))return false;
   if(state.age!==''&&!s.ages.includes(AGES[+state.age]))return false;
   if(state.lang&&!s.languages.includes(state.lang))return false;
   return true;
 }
 
-function card(s){
+function details(s){
   const ageBar=AGES.map((a,i)=>`<i class="${s.ages.includes(a)?(state.age!==''&&+state.age===i?'hit':'on'):''}"></i>`).join('');
-  const span=s.ages.length?(AGE_SHORT[AGES.indexOf(s.ages[0])]+' to '+AGE_SHORT[AGES.indexOf(s.ages[s.ages.length-1])]).replace('Prenatal to','Prenatal through'):'Not listed';
-  const web=s.website?`<a href="${esc(s.website)}" target="_blank" rel="noopener">${esc(s.website.replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,''))}</a>`:'Not listed';
-  return `<article class="card">
-    <div class="top"><div><h3>${esc(s.name)}</h3><p class="where">Office in ${esc(s.city)} · Serves ${esc(s.counties.join(', '))} ${s.counties.length>1?'counties':'County'}</p></div><span class="badge ${s.program}" title="${progName(s.program)}">${s.program}</span></div>
-    <dl class="facts">
-      <dt>Ages</dt><dd><div class="ages" aria-label="Ages served: ${esc(s.ages.join(', '))}">${ageBar}</div><div class="agecap">${AGE_SHORT.map(a=>`<span>${a}</span>`).join('')}</div></dd>
-      <dt>Languages</dt><dd>${esc(s.languages.join(', ')||'Not listed')}</dd>
-      <dt>Phone</dt><dd>${esc(s.phone||'Not listed')}</dd>
-      <dt>Website</dt><dd>${web}</dd>
+  const web=s.website?`<a href="${esc(s.website)}" target="_blank" rel="noopener">${esc(s.website.replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,''))}</a>`:t('notListed');
+  return `<dl class="facts">
+      <dt>${t('ages')}</dt><dd><div class="ages" aria-label="${esc(t('ages'))}: ${esc(s.ages.map(a=>t('ageShort')[AGES.indexOf(a)]).join(', '))}">${ageBar}</div><div class="agecap">${t('ageShort').map(a=>`<span>${a}</span>`).join('')}</div></dd>
+      <dt>${t('langs')}</dt><dd>${esc(s.languages.map(langName).join(', ')||t('notListed'))}</dd>
+      <dt>${t('phone')}</dt><dd>${esc(s.phone||t('notListed'))}</dd>
+      <dt>${t('website')}</dt><dd>${web}</dd>
     </dl>
-    <div class="actions"><button class="btn" data-id="${s.id}">I'm interested</button>
-    ${s.email?'':'<span class="note">No email on file. Parent Possible will pass your request along.</span>'}</div>
-  </article>`;
+    <div class="actions"><button class="btn" data-id="${s.id}">${t('interested')}</button>
+    ${s.email?'':`<span class="note">${t('noEmail')}</span>`}</div>`;
+}
+const badge=s=>`<span class="badge ${s.program}" title="${esc(progName(s.program))}">${s.program}</span>`;
+function card(s){
+  return `<article class="card"><div class="top"><div><h3>${esc(s.name)}</h3><p class="where">${esc(t('office')(s.city))} · ${esc(t('serves')(s.counties))}</p></div>${badge(s)}</div>${details(s)}</article>`;
+}
+function row(s){
+  return `<details class="card" data-sid="${s.id}"><summary><div class="sumtext"><h3>${esc(s.name)}</h3><p class="where">${esc(t('office')(s.city))} · ${esc(s.languages.map(langName).join(', '))}</p></div>${badge(s)}<i class="chev" aria-hidden="true"></i></summary><div class="body"><p class="where" style="margin:0">${esc(t('serves')(s.counties))}</p>${details(s)}</div></details>`;
 }
 
 function render(){
   document.querySelectorAll('#map path').forEach(p=>p.classList.toggle('sel',p.dataset.n===state.county));
-  const list=SITES.filter(s=>matches(s));
+  const open=new Set([...document.querySelectorAll('details[open][data-sid]')].map(d=>d.dataset.sid));
+  const list=SITES.filter(matches);
   const c=state.county;
-  const filtersOn=state.age!==''||state.lang||state.progs.size<2;
-  let html='';
-  const title=c?`Programs serving ${esc(c)} County`:'All PAT and HIPPY programs in Colorado';
-  html+=`<div class="rhead"><h2>${title}</h2><span class="count">${list.length} ${list.length===1?'program':'programs'}${filtersOn?' · <button class="linkbtn" id="clr">Clear filters</button>':''}</span></div>`;
+  $('#reset').disabled=!(c||state.age!==''||state.lang||state.progs.size<2);
+  let html=`<div class="rhead"><h2>${esc(t('resTitle')(c))}</h2><span class="count">${t('count')(list.length)}</span></div>`;
   if(!list.length){
-    html+=`<div class="empty"><h3>No programs match all of those filters</h3><p>${c?esc(c)+' County has programs, but none match your choices for age, language, or program.':'Try fewer filters.'} Programs can sometimes arrange interpreters, so it's still worth reaching out.</p><p><button class="btn ghost" id="clr2">Clear filters</button></p></div>`;
+    html+=`<div class="empty"><h3>${t('emptyH')}</h3><p>${esc(t('emptyP')(c))}</p><p><button class="btn ghost" id="clr2">${t('reset')}</button></p></div>`;
+  }else if(list.length<=2){
+    html+=list.map(card).join('');
+  }else{
+    html+=`<p class="hint">${t('hint')}</p>`+list.map(row).join('');
   }
-  html+=list.map(card).join('');
   $('#results').innerHTML=html;
+  open.forEach(id=>{const d=document.querySelector(`details[data-sid="${id}"]`);if(d)d.open=true});
 }
 $('#results').addEventListener('click',e=>{
-  const t=e.target.closest('button');if(!t)return;
-  if(t.id==='clr'||t.id==='clr2')return clearFilters();
-  if(t.dataset.id)openForm(SITES[+t.dataset.id],t);
+  const b=e.target.closest('button');if(!b)return;
+  if(b.id==='clr2')return resetAll();
+  if(b.dataset.id)openForm(SITES[+b.dataset.id],b);
 });
+
+// language
+function applyLang(l){
+  L=l;document.documentElement.lang=l;
+  try{localStorage.setItem('ppFinderLang',l)}catch(e){}
+  document.querySelectorAll('[data-ln]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.ln===l));
+  document.querySelectorAll('[data-t]').forEach(el=>{const v=t(el.dataset.t);if(el.hasAttribute('data-html'))el.innerHTML=v;else el.textContent=v});
+  $('#map').setAttribute('aria-label',t('mapLabel'));
+  $('#pKids').placeholder=t('kidsPh');
+  fillControls();syncWho();
+  if(current)setFormTitle();
+  render();
+}
+document.querySelectorAll('[data-ln]').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.ln)));
+function startLang(){
+  const q=new URLSearchParams(location.search).get('lang');
+  if(q==='es'||q==='en')return q;
+  try{const s=localStorage.getItem('ppFinderLang');if(s==='es'||s==='en')return s}catch(e){}
+  return (navigator.languages||[navigator.language||'']).some(x=>/^es\b/i.test(x))?'es':'en';
+}
 
 // interest form
 let current=null;
@@ -306,18 +485,21 @@ const dlg=$('#dlg');
 function syncWho(){
   const w=$('#whoWorker').checked;
   $('#workerRow').hidden=!w;
-  $('#pNameLbl').textContent=w?"Parent or caregiver's first name":'Your first name';
-  $('#reachWho').textContent=w?'the family':'you';
-  $('#consentWho').textContent=w?'this family (they agreed to be referred).':'me.';
+  $('#pNameLbl').textContent=w?t('fNameW'):t('fName');
+  $('#reachLbl').textContent=w?t('reachW'):t('reach');
+  $('#consentLbl').textContent=w?t('consentW'):t('consent');
 }
 document.querySelectorAll('input[name="who"]').forEach(r=>r.addEventListener('change',syncWho));
+function setFormTitle(){
+  $('#dlgTitle').textContent=t('dlgTitle')(current.name);
+  $('#dlgSub').textContent=t('dlgSub')(progName(current.program),current.counties);
+}
 function openForm(s,btn){
   current=s;
   $('#form').hidden=false;$('#done').hidden=true;$('#err').hidden=true;
-  $('#dlgTitle').textContent=`Tell ${s.name} you're interested`;
-  $('#dlgSub').textContent=`${progName(s.program)} · serves ${s.counties.join(', ')}`;
-  if(state.lang&&s.languages.includes(state.lang))$('#pLang').value=state.lang;
-  else $('#pLang').value=s.languages[0]||'English';
+  setFormTitle();
+  const pref=state.lang||(L==='es'?'Spanish':'English');
+  $('#pLang').value=s.languages.includes(pref)?pref:(s.languages[0]||'English');
   syncWho();
   dlg.showModal();
   // Inside an auto-sized iframe the viewport is the whole page, so place the form next to the button instead of the middle.
@@ -330,16 +512,16 @@ $('#form').addEventListener('submit',e=>{
   const how=document.querySelector('input[name="how"]:checked').value;
   const phone=$('#pPhone').value.trim(),email=$('#pEmail').value.trim(),name=$('#pName').value.trim();
   const errs=[];
-  if(!name)errs.push('Add a first name.');
-  if(how==='Email'&&!/^\S+@\S+\.\S+$/.test(email))errs.push('Add an email address, or pick a different way to reach you.');
-  if(how!=='Email'&&phone.replace(/\D/g,'').length<10)errs.push('Add a 10-digit phone number, or pick email.');
-  if(!$('#consent').checked)errs.push('Check the box so the program knows it can contact you.');
+  if(!name)errs.push(t('errName'));
+  if(how==='Email'&&!/^\S+@\S+\.\S+$/.test(email))errs.push(t('errEmail'));
+  if(how!=='Email'&&phone.replace(/\D/g,'').length<10)errs.push(t('errPhone'));
+  if(!$('#consent').checked)errs.push(t('errConsent'));
   if(errs.length){$('#err').textContent=errs.join(' ');$('#err').hidden=false;return}
   const w=$('#whoWorker').checked;
   const county=state.county||current.counties[0];
-  const to=current.email||PP_INBOX;
+  // The email goes to program staff, so it stays in English and notes the family's language.
   const lines=[
-    `To: ${to}`,
+    `To: ${current.email||PP_INBOX}`,
     current.email?`Cc: ${PP_INBOX}`:null,
     `Subject: New family interested in ${current.program} (${county} County)`,
     '',
@@ -351,6 +533,7 @@ $('#form').addEventListener('submit',e=>{
     `County: ${county}`,
     `Child's age: ${$('#pKids').value.trim()||'Not given'}`,
     `Preferred language: ${$('#pLang').value}`,
+    `Form filled out in: ${L==='es'?'Spanish':'English'}`,
     `Best way to reach: ${how}`,
     phone?`Phone: ${phone}`:null,
     email?`Email: ${email}`:null,
@@ -361,7 +544,7 @@ $('#form').addEventListener('submit',e=>{
     current.email?'Parent Possible is copied and will check in if there is no follow-up within 3 business days.':'This site has no email on file, so Parent Possible will forward this request to the site.',
   ].filter(l=>l!==null);
   $('#preview').textContent=lines.join('\n');
-  $('#doneMsg').textContent=`In the live version, ${current.name} would get this request and someone would reach out by ${how.toLowerCase()}. No message was sent from this prototype.`;
+  $('#doneMsg').textContent=t('doneMsg')(current.name,t('howWords')[how]);
   $('#form').hidden=true;$('#done').hidden=false;
 });
 
@@ -369,5 +552,5 @@ $('#form').addEventListener('submit',e=>{
 function postHeight(){try{parent.postMessage({type:'pp-finder-height',height:Math.ceil(document.body.getBoundingClientRect().height)},'*')}catch(e){}}
 new ResizeObserver(postHeight).observe(document.body);
 
-render();
+applyLang(startLang());
 </script>

@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
 <style>
-/* Layout: teal title band, filter bar, then county map + result list side by side, stacking on phones. Built to sit inside a WordPress iframe. */
+/* Layout: language toggle and filter bar, then county map + result list side by side, stacking on phones. Built to sit inside a WordPress iframe. */
 :root{
   /* Parent Possible palette: white page, teal and coral-orange, warm gray text */
   --bg:#ffffff; --surface:#ffffff; --field:#f6f9f9; --ink:#2c3b3e; --muted:#636e70; --line:#dce5e6;
@@ -12,7 +12,7 @@
   --teal:#2e7f86; --teal-dark:#1f5f66; --teal-deep:#174a50; --teal-soft:#e3f1f2;
   --pat:#2e7f86; --pat-soft:#e3f1f2; --hippy:#c4491f; --hippy-soft:#fdebe4;
   --map-empty:#eef2f2; --map-cover:#5fa6ac; --map-sel:#e8603c; --map-stroke:#ffffff;
-  --warn-soft:#fdf1ec; --focus:#2e7f86; --on-band:#ffffff; --on-band-muted:#d3e8ea;
+  --warn-soft:#fdf1ec; --focus:#2e7f86;
   --f-display:"Montserrat", "Avenir Next", "Segoe UI", sans-serif;
   --f-body:"Montserrat", "Avenir Next", "Segoe UI", sans-serif;
   --r:10px;
@@ -23,17 +23,12 @@
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
 .gutter{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .inner{max-width:1180px;margin:0 auto}
-.band{background:linear-gradient(135deg,var(--teal-dark),var(--teal-deep));color:var(--on-band);padding-block:28px 32px}
-.band .inner{display:grid;gap:10px}
-.bandtop{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.eyebrow{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-light)}
-.langs{display:inline-flex;border:1.5px solid rgba(255,255,255,.5);border-radius:999px;overflow:hidden}
-.langs button{font:inherit;font-size:14px;font-weight:600;border:0;background:transparent;color:var(--on-band);padding:6px 14px;cursor:pointer}
-.langs button[aria-pressed="true"]{background:var(--on-band);color:var(--teal-dark)}
-h1{font-family:var(--f-display);font-weight:700;color:var(--on-band);font-size:clamp(28px,4vw,42px);line-height:1.12;margin:0;text-wrap:balance;letter-spacing:-.01em;max-width:22ch}
-h1 em{font-style:normal;color:var(--accent-light)}
-.lede{margin:0;max-width:62ch;color:var(--on-band-muted)}
-.wrap{padding-block:20px 48px;display:grid;gap:20px}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.topline .proto{flex:1 1 320px}
+.langs{display:inline-flex;border:1.5px solid var(--teal);border-radius:999px;overflow:hidden;margin-left:auto}
+.langs button{font:inherit;font-size:14px;font-weight:600;border:0;background:var(--surface);color:var(--teal-dark);padding:7px 16px;cursor:pointer}
+.langs button[aria-pressed="true"]{background:var(--teal);color:#ffffff}
+.wrap{padding-block:16px 48px;display:grid;gap:20px}
 .proto{font-size:13px;color:var(--muted);border:1px dashed var(--line);border-radius:var(--r);padding:8px 12px}
 .proto b{color:var(--ink)}
 .bar{display:grid;grid-template-columns:1.6fr 1.7fr 1fr 1fr auto;gap:12px;align-items:end;background:var(--teal-soft);border-radius:var(--r);padding:14px}
@@ -60,7 +55,7 @@ a:hover{color:var(--accent)}
 .mapbox path.on{fill:var(--map-cover);cursor:pointer}
 .mapbox path.on:hover{fill:var(--teal-dark)}
 .mapbox path.sel,.mapbox path.sel:hover{fill:var(--map-sel)}
-.mapbox text{font-family:var(--f-body);font-size:9px;font-weight:600;fill:var(--ink);pointer-events:none;text-anchor:middle;paint-order:stroke;stroke:#ffffff;stroke-width:2.5px;stroke-linejoin:round}
+.mapbox text{font-family:var(--f-body);font-size:12.5px;font-weight:700;fill:#ffffff;pointer-events:none;text-anchor:middle;paint-order:stroke;stroke:var(--teal-deep);stroke-width:3px;stroke-linejoin:round}
 .maptip{position:absolute;pointer-events:none;background:var(--ink);color:#ffffff;border-radius:8px;padding:6px 10px;font-size:13px;line-height:1.35;white-space:nowrap;transform:translate(-50%,calc(-100% - 12px));box-shadow:0 4px 14px rgba(20,40,40,.18)}
 .maptip b{display:block;font-weight:700}
 .maptip span{color:#cfe3e5}
@@ -138,23 +133,16 @@ dialog::backdrop{background:rgba(10,20,20,.5)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
-<header class="band gutter">
-  <div class="inner">
-    <div class="bandtop">
-      <span class="eyebrow" data-t="eyebrow">Parent Possible · Program Finder</span>
-      <div class="langs" role="group" aria-label="Language / Idioma">
-        <button type="button" id="lnEn" data-ln="en" lang="en" aria-pressed="true">English</button>
-        <button type="button" id="lnEs" data-ln="es" lang="es" aria-pressed="false">Español</button>
-      </div>
-    </div>
-    <h1 data-t="h1" data-html>Find a home visiting program <em>near you</em></h1>
-    <p class="lede" data-t="lede">Parents as Teachers and HIPPY home visitors come to your home. Pick the county you live in to see which programs serve it, then let a program know you're interested.</p>
-  </div>
-</header>
 
 <div class="wrap gutter">
  <div class="inner" style="display:grid;gap:20px">
-  <div class="proto" data-t="proto" data-html><b>Prototype for review.</b> Built by Duke GRC for Parent Possible using the 2025-26 site list. Interest requests are not sent anywhere yet.</div>
+  <div class="topline">
+    <div class="proto" data-t="proto" data-html><b>Prototype for review.</b> Built by Duke GRC for Parent Possible using the 2025-26 site list. Interest requests are not sent anywhere yet.</div>
+    <div class="langs" role="group" aria-label="Language / Idioma">
+      <button type="button" id="lnEn" data-ln="en" lang="en" aria-pressed="true">English</button>
+      <button type="button" id="lnEs" data-ln="es" lang="es" aria-pressed="false">Español</button>
+    </div>
+  </div>
 
   <div class="bar" role="search">
     <div class="field">
@@ -268,9 +256,6 @@ const TIMES=['Any time','Weekday mornings','Weekday afternoons','Evenings','Week
 // All page text in English and Spanish. The Spanish should be checked by a native speaker at Parent Possible.
 const T={
 en:{
-  eyebrow:'Parent Possible · Program Finder',
-  h1:'Find a home visiting program <em>near you</em>',
-  lede:"Parents as Teachers and HIPPY home visitors come to your home. Pick the county you live in to see which programs serve it, then let a program know you're interested.",
   proto:'<b>Prototype for review.</b> Built by Duke GRC for Parent Possible using the 2025-26 site list. Interest requests are not sent anywhere yet.',
   countyLbl:'County you live in', allCounties:'All Colorado counties', county:n=>n+' County',
   progLbl:'Program', patName:'Parents as Teachers', ageLbl:"Child's age", langLbl:'Language', reset:'Reset filters',
@@ -307,9 +292,6 @@ en:{
   howWords:{'Phone call':'phone call','Text message':'text message','Email':'email'},
 },
 es:{
-  eyebrow:'Parent Possible · Buscador de programas',
-  h1:'Encuentre un programa de visitas al hogar <em>cerca de usted</em>',
-  lede:'El personal de Padres como Maestros (PAT) y de HIPPY visita a las familias en su casa. Elija el condado donde vive para ver qué programas lo atienden y avísele a un programa que le interesa.',
   proto:'<b>Prototipo para revisión.</b> Hecho por Duke GRC para Parent Possible con la lista de sitios 2025-26. Las solicitudes todavía no se envían.',
   countyLbl:'Condado donde vive', allCounties:'Todos los condados de Colorado', county:n=>'Condado de '+n,
   progLbl:'Programa', patName:'Padres como Maestros', ageLbl:'Edad de su hijo/a', langLbl:'Idioma', reset:'Borrar filtros',
@@ -376,7 +358,7 @@ const svgNS='http://www.w3.org/2000/svg';
 const tip=$('#maptip'),mapbox=$('#mapbox');
 function showTip(e,n){
   const cv=cover[n];
-  tip.innerHTML=`<b>${esc(t('county')(n))}</b><span>${cv.size>1?t('both'):[...cv][0]==='PAT'?t('patName')+' (PAT)':'HIPPY'}</span>`;
+  tip.innerHTML=`<b>${esc(t('county')(n))}</b><span>${cv.size>1?t('both'):[...cv][0]}</span>`;
   const r=mapbox.getBoundingClientRect();
   tip.style.left=(e.clientX-r.left)+'px';tip.style.top=(e.clientY-r.top)+'px';tip.hidden=false;
 }
@@ -390,7 +372,13 @@ MAP.forEach(m=>{
   }
   $('#map').append(p);
 });
-MAP.forEach(m=>{if(!cover[m.n]||m.n.length>11||['Denver','Broomfield','Gilpin','Clear Creek'].includes(m.n))return;const x=document.createElementNS(svgNS,'text');x.setAttribute('x',m.x);x.setAttribute('y',m.y+3);x.textContent=m.n;$('#map').append(x)});
+// Label served counties, skipping any county too small to fit its name. Wait for the font so widths are right.
+(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>MAP.forEach(m=>{
+  if(!cover[m.n])return;
+  const x=document.createElementNS(svgNS,'text');x.setAttribute('x',m.x);x.setAttribute('y',m.y+4);x.textContent=m.n;$('#map').append(x);
+  const box=$(`#map path[data-n="${m.n}"]`).getBBox();
+  if(x.getComputedTextLength()>box.width*.95||box.height<16)x.remove();
+}));
 
 function setCounty(c){state.county=c;$('#county').value=c;render()}
 $('#county').addEventListener('change',e=>setCounty(e.target.value));

@@ -85,6 +85,7 @@ function doPost(e) {
         r.name, r.how, r.phone, r.email, r.kids, r.language,
         r.time, r.workerName, r.workerOrg, r.note, r.formLanguage, ''
       ].map(safeCell_)]);
+      sheet.getRange(row, 1).setNumberFormat('mmm d, yyyy h:mm am/pm');
     } finally {
       lock.releaseLock();
     }

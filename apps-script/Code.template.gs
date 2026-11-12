@@ -77,11 +77,14 @@ function doPost(e) {
     lock.waitLock(10000);
     try {
       var sheet = sheet_();
-      sheet.appendRow([
+      // Write after the last filled "Received" cell rather than using appendRow,
+      // so pre-made checkboxes in "Followed up?" don't push new rows to the bottom.
+      var row = sheet.getRange('A:A').getValues().filter(function (v) { return v[0] !== ''; }).length + 1;
+      sheet.getRange(row, 1, 1, HEADERS.length).setValues([[
         new Date(), status, site.program, site.name, realTo, r.county, r.who,
         r.name, r.how, r.phone, r.email, r.kids, r.language,
         r.time, r.workerName, r.workerOrg, r.note, r.formLanguage, ''
-      ].map(safeCell_));
+      ].map(safeCell_)]);
     } finally {
       lock.releaseLock();
     }

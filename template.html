@@ -133,6 +133,8 @@ dialog::backdrop{background:rgba(10,20,20,.5)}
 .privacy b{color:var(--ink)}
 .preview{background:var(--field);border:1px solid var(--line);border-radius:8px;padding:12px;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:300px;overflow:auto}
 .err{color:#b3261e;font-size:13px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.btn:disabled{opacity:.6;cursor:wait}
 .foot{font-size:13px;color:var(--muted)}
 @media (max-width:980px){.bar{grid-template-columns:1fr 1fr}.bar .resetwrap{grid-column:1/-1}}
 @media (max-width:860px){.main{grid-template-columns:1fr}.side{display:contents}.mapbox{order:1}.zipbox{order:2}.results{order:3}.explain{order:4}}
@@ -247,6 +249,7 @@ dialog::backdrop{background:rgba(10,20,20,.5)}
     <div class="field"><label for="pNote" data-t="fNote">Anything you'd like them to know? (optional)</label><textarea id="pNote"></textarea></div>
     <div class="privacy" data-t="privacy" data-html></div>
     <label class="check"><input type="checkbox" id="consent"> <span id="consentLbl"></span></label>
+    <div class="hp" aria-hidden="true"><label for="company">Company</label><input id="company" tabindex="-1" autocomplete="off"></div>
     <p class="err" id="err" hidden></p>
     <div class="actions">
       <button class="btn" type="submit" data-t="send">Send my request</button>
@@ -256,7 +259,7 @@ dialog::backdrop{background:rgba(10,20,20,.5)}
   <div class="dlg" id="done" hidden>
     <h2 data-t="doneH">Request ready</h2>
     <p style="margin:0" id="doneMsg"></p>
-    <span class="lbl" data-t="previewLbl">Prototype: this is the email that would be sent</span>
+    <span class="lbl" id="previewLbl" data-t="previewLbl">Prototype: this is the email that would be sent</span>
     <div class="preview" id="preview"></div>
     <div class="actions"><button class="btn" type="button" id="close" data-t="close">Close</button></div>
   </div>
@@ -268,6 +271,8 @@ const MAP=__MAP__;
 const ZIPS=__ZIPS__;
 const AGES=['Prenatal','Birth to 1','1 to 2','2 to 3','3 to 4','4 to 5','5 and older'];
 const PP_INBOX='[Parent Possible intake inbox]';
+// The Google Apps Script web app that saves each request and emails the site. Leave empty to show an email preview instead.
+const FORM_URL='__FORM_URL__';
 const TIMES=['Any time','Weekday mornings','Weekday afternoons','Evenings','Weekends'];
 
 // All page text in English and Spanish. The Spanish should be checked by a native speaker at Parent Possible.
@@ -309,6 +314,9 @@ en:{
   send:'Send my request', cancel:'Cancel',
   errName:'Add a first name.', errEmail:'Add an email address, or pick a different way to reach you.',
   errPhone:'Add a 10-digit phone number, or pick email.', errConsent:'Check the box so the program knows it can contact you.',
+  sending:'Sending…', sentH:'Request sent',
+  sentMsg:(n,how,hasEmail)=>`Thank you. ${n} has your request and will reach out by ${how}.`+(hasEmail?' Parent Possible got a copy and will make sure someone follows up.':' Parent Possible will pass your request to them.'),
+  sendFail:(n,ph)=>`We couldn't send your request. Please try again, or call ${n}`+(ph?` at ${ph}`:'')+'.',
   doneH:'Request ready', previewLbl:'Prototype: this is the email that would be sent', close:'Close',
   doneMsg:(n,how)=>`In the live version, ${n} would get this request and someone would reach out by ${how}. No message was sent from this prototype.`,
   howWords:{'Phone call':'phone call','Text message':'text message','Email':'email'},
@@ -351,6 +359,9 @@ es:{
   send:'Enviar mi solicitud', cancel:'Cancelar',
   errName:'Escriba un nombre.', errEmail:'Escriba un correo electrónico o elija otra forma de comunicarse.',
   errPhone:'Escriba un teléfono de 10 dígitos o elija correo electrónico.', errConsent:'Marque la casilla para que el programa sepa que puede comunicarse con usted.',
+  sending:'Enviando…', sentH:'Solicitud enviada',
+  sentMsg:(n,how,hasEmail)=>`Gracias. ${n} recibió su solicitud y se comunicará por ${how}.`+(hasEmail?' Parent Possible recibió una copia y se asegurará de que alguien le dé seguimiento.':' Parent Possible le hará llegar su solicitud.'),
+  sendFail:(n,ph)=>`No pudimos enviar su solicitud. Inténtelo de nuevo o llame a ${n}`+(ph?` al ${ph}`:'')+'.',
   doneH:'Solicitud lista', previewLbl:'Prototipo: este es el correo que se enviaría', close:'Cerrar',
   doneMsg:(n,how)=>`En la versión final, ${n} recibiría esta solicitud y alguien se comunicaría por ${how}. Este prototipo no envió ningún mensaje.`,
   howWords:{'Phone call':'teléfono','Text message':'mensaje de texto','Email':'correo electrónico'},
@@ -552,7 +563,7 @@ function openForm(s,btn){
 }
 $('#cancel').addEventListener('click',()=>dlg.close());
 $('#close').addEventListener('click',()=>dlg.close());
-$('#form').addEventListener('submit',e=>{
+$('#form').addEventListener('submit',async e=>{
   e.preventDefault();
   const how=document.querySelector('input[name="how"]:checked').value;
   const phone=$('#pPhone').value.trim(),email=$('#pEmail').value.trim(),name=$('#pName').value.trim();
@@ -588,9 +599,34 @@ $('#form').addEventListener('submit',e=>{
     '',
     current.email?'Parent Possible is copied and will check in if there is no follow-up within 3 business days.':'This site has no email on file, so Parent Possible will forward this request to the site.',
   ].filter(l=>l!==null);
-  $('#preview').textContent=lines.join('\n');
-  $('#doneMsg').textContent=t('doneMsg')(current.name,t('howWords')[how]);
-  $('#form').hidden=true;$('#done').hidden=false;
+  if(!FORM_URL||FORM_URL.startsWith('__')){
+    $('#preview').textContent=lines.join('\n');
+    $('#doneMsg').textContent=t('doneMsg')(current.name,t('howWords')[how]);
+    $('#done h2').textContent=t('doneH');$('#previewLbl').hidden=false;$('#preview').hidden=false;
+    $('#form').hidden=true;$('#done').hidden=false;
+    return;
+  }
+  // Send as text/plain so the browser makes a simple request with no CORS preflight, which Apps Script can't answer.
+  const payload={siteId:current.id,county,who:w?'worker':'parent',name,how,phone,email,
+    kids:$('#pKids').value.trim(),language:$('#pLang').value,time:$('#pTime').value,
+    workerName:$('#wName').value.trim(),workerOrg:$('#wOrg').value.trim(),note:$('#pNote').value.trim(),
+    consent:true,formLanguage:L,company:$('#company').value};
+  const btn=$('#form button[type=submit]');
+  btn.disabled=true;btn.textContent=t('sending');$('#err').hidden=true;
+  try{
+    const res=await fetch(FORM_URL,{method:'POST',body:JSON.stringify(payload),headers:{'Content-Type':'text/plain;charset=utf-8'}});
+    const out=await res.json();
+    if(!out.ok)throw new Error(out.error||'failed');
+    $('#done h2').textContent=t('sentH');
+    $('#doneMsg').textContent=t('sentMsg')(current.name,t('howWords')[how],!!current.email);
+    $('#previewLbl').hidden=true;$('#preview').hidden=true;
+    $('#form').hidden=true;$('#done').hidden=false;
+    $('#form').reset();syncWho();
+  }catch(err){
+    $('#err').textContent=t('sendFail')(current.name,current.phone);$('#err').hidden=false;
+  }finally{
+    btn.disabled=false;btn.textContent=t('send');
+  }
 });
 
 // Let WordPress size the iframe to fit the content.
